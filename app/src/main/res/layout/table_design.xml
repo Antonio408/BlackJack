@@ -23,7 +23,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="85dp"
-        android:layout_weight="0.12">
+        android:layout_weight="0.08">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:layout_weight="0.29">
+        android:layout_weight="0.32">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -63,6 +63,21 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/imageView4"
             android:adjustViewBounds="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_weight="0.37">
+
+        <TextView
+            android:text="Bet Buttons and Coins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/textView3"
+            android:textSize="30sp" />
     </RelativeLayout>
 
 </LinearLayout>
