@@ -33,6 +33,7 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/imageView3"
             android:adjustViewBounds="true" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -48,6 +49,7 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/bet_textView"
             android:textSize="30sp" />
+
     </RelativeLayout>
 
     <RelativeLayout
