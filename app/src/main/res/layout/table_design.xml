@@ -202,7 +202,7 @@
             app:srcCompat="@drawable/ace"
             android:id="@+id/player3_imageView"
             android:adjustViewBounds="true"
-            android:layout_marginStart="19dp"
+            android:layout_marginStart="20dp"
             android:layout_alignParentTop="true"
             android:layout_alignStart="@+id/player2_imageView" />
 
@@ -242,9 +242,9 @@
             app:srcCompat="@drawable/heart_ace"
             android:id="@+id/player7_imageView"
             android:adjustViewBounds="true"
+            android:layout_marginStart="19dp"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/player1_imageView"
-            android:layout_marginStart="8dp" />
+            android:layout_alignStart="@+id/player6_imageView" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -252,18 +252,9 @@
             app:srcCompat="@drawable/ace"
             android:id="@+id/player8_imageView"
             android:adjustViewBounds="true"
-            android:layout_marginStart="8dp"
             android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/player2_imageView" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/heart_ace"
-            android:id="@+id/player9_imageView"
-            android:adjustViewBounds="true"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignStart="@+id/player7_imageView"
+            android:layout_marginStart="19dp" />
 
     </RelativeLayout>
 
