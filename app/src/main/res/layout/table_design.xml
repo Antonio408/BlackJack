@@ -280,9 +280,9 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/coin_25"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/imageButton4"
+            android:layout_toEndOf="@+id/coin5_imageButton"
             android:layout_marginStart="37dp"
-            android:id="@+id/imageButton5"
+            android:id="@+id/coin25_imageButton"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter" />
 
@@ -291,9 +291,9 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/coin_50"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/imageButton5"
+            android:layout_toEndOf="@+id/coin25_imageButton"
             android:layout_marginStart="37dp"
-            android:id="@+id/imageButton6"
+            android:id="@+id/coin50_imageButton"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter" />
 
@@ -302,17 +302,17 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/coin_100"
             android:layout_marginStart="37dp"
-            android:id="@+id/imageButton8"
+            android:id="@+id/coin100_imageButton"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/imageButton6" />
+            android:layout_toEndOf="@+id/coin50_imageButton" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/coin_5a"
-            android:id="@+id/imageButton4"
+            android:id="@+id/coin5_imageButton"
             android:scaleType="fitCenter"
             android:layout_marginStart="18dp"
             android:layout_alignParentTop="true"
