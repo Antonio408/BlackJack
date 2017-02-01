@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import java.util.Random;
 
@@ -31,7 +32,7 @@ implements View.OnClickListener{
             R.drawable.clubs_four,R.drawable.clubs_five, R.drawable.clubs_six,R.drawable.clubs_seven,
             R.drawable.clubs_eight, R.drawable.clubs_nine, R.drawable.clubs_ten,
             R.drawable.clubs_jack, R.drawable.clubs_queen, R.drawable.clubs_king};
-
+    
     //array needed to choose suit
     private int [] suits = {1,2,3,4};
 
@@ -83,7 +84,15 @@ implements View.OnClickListener{
 
     }
 
-    
+    public void deal(){
+        Button hit = (Button) findViewById(R.id.hit_button);
+
+        chooseSuit();
+        chooseCard();
+
+
+    }
+
     public int chooseSuit(){
         int set_suit = r.nextInt(4 -1 )+1;
         return set_suit;
