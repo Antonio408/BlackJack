@@ -31,6 +31,8 @@ implements View.OnClickListener{
             R.drawable.clubs_eight, R.drawable.clubs_nine, R.drawable.clubs_ten,
             R.drawable.clubs_jack, R.drawable.clubs_queen, R.drawable.clubs_king};
 
+    //array needed to choose suit 
+    private int [] suits = {1,2,3,4};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
