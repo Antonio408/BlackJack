@@ -94,11 +94,16 @@ implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
+
         deal();
     }
 
+    public void hit(){
+
+    }
+
     public void deal(){
-       if(playersHand == 2){
+        if(playersHand == 2){
            playersHand = 0;
        }
         setImageView(cardDrawables[chooseSuit()][chooseCard()],playersCards[playersHand]);
