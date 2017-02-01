@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity
 implements View.OnClickListener{
@@ -31,8 +32,11 @@ implements View.OnClickListener{
             R.drawable.clubs_eight, R.drawable.clubs_nine, R.drawable.clubs_ten,
             R.drawable.clubs_jack, R.drawable.clubs_queen, R.drawable.clubs_king};
 
-    //array needed to choose suit 
+    //array needed to choose suit
     private int [] suits = {1,2,3,4};
+
+    Random r = new Random();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,5 +81,15 @@ implements View.OnClickListener{
     @Override
     public void onClick(View view) {
 
+    }
+
+    
+    public int chooseSuit(){
+        int set_suit = r.nextInt(4 -1 )+1;
+        return set_suit;
+    }
+    public int chooseCard(){
+        int set_card = r.nextInt(13-1)+1;
+        return set_card;
     }
 }
