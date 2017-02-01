@@ -207,7 +207,8 @@
             android:adjustViewBounds="true"
             android:layout_marginStart="20dp"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/player2_imageView" />
+            android:layout_alignStart="@+id/player2_imageView"
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -217,7 +218,8 @@
             android:adjustViewBounds="true"
             android:layout_marginStart="19dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/player3_imageView" />
+            android:layout_alignStart="@+id/player3_imageView"
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -227,7 +229,8 @@
             android:adjustViewBounds="true"
             android:layout_marginStart="19dp"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/player4_imageView" />
+            android:layout_alignStart="@+id/player4_imageView"
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -237,7 +240,8 @@
             android:adjustViewBounds="true"
             android:layout_marginStart="19dp"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/player5_imageView" />
+            android:layout_alignStart="@+id/player5_imageView"
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -247,7 +251,8 @@
             android:adjustViewBounds="true"
             android:layout_marginStart="19dp"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/player6_imageView" />
+            android:layout_alignStart="@+id/player6_imageView"
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -257,7 +262,8 @@
             android:adjustViewBounds="true"
             android:layout_alignParentBottom="true"
             android:layout_alignStart="@+id/player7_imageView"
-            android:layout_marginStart="19dp" />
+            android:layout_marginStart="19dp"
+            android:visibility="invisible"/>
 
     </RelativeLayout>
 

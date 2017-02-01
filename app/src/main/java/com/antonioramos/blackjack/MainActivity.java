@@ -37,7 +37,7 @@ implements View.OnClickListener{
     private  int [] playersCards ={R.id.player1_imageView, R.id.player2_imageView,R.id.player3_imageView,
             R.id.player4_imageView,R.id.player5_imageView,R.id.player6_imageView,R.id.player7_imageView,
             R.id.player8_imageView};
-    
+
     //array needed to choose suit
     private int [] suits = {1,2,3,4};
 
