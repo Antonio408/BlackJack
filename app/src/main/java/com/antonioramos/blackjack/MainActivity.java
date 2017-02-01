@@ -32,6 +32,11 @@ implements View.OnClickListener{
             R.drawable.clubs_four,R.drawable.clubs_five, R.drawable.clubs_six,R.drawable.clubs_seven,
             R.drawable.clubs_eight, R.drawable.clubs_nine, R.drawable.clubs_ten,
             R.drawable.clubs_jack, R.drawable.clubs_queen, R.drawable.clubs_king};
+
+
+    private  int [] playersCards ={R.id.player1_imageView, R.id.player2_imageView,R.id.player3_imageView,
+            R.id.player4_imageView,R.id.player5_imageView,R.id.player6_imageView,R.id.player7_imageView,
+            R.id.player8_imageView};
     
     //array needed to choose suit
     private int [] suits = {1,2,3,4};
