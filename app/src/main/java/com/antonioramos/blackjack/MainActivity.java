@@ -132,15 +132,20 @@ implements View.OnClickListener{
             bet_tv.setText("place bet");
         }
     }
-
+    //method will set selected drawable to current imageView
     public void setImageView(int drawableId, int imageId){
         ImageView imageView = (ImageView)findViewById(imageId);
         imageView.setImageResource(drawableId);
     }
+    //method will generate and return a number between 0 and 3
+    //0 = hearts, 1 = diamonds, 2 = spades, 3 = clubs
     public int chooseSuit(){
         int set_suit = r.nextInt(4 - 0)+0;
         return set_suit;
     }
+    //method will generate and return a number between 0 and 12
+    //card value is
+    // 0=ace, 1=2, 2=3, 3=4, 4=5, 5=6, 7=8, 8=9, 9=10, 10=jack, 11=queen, 12=king
     public int chooseCard(){
         int set_card = r.nextInt(13-0)+0;
         return set_card;
