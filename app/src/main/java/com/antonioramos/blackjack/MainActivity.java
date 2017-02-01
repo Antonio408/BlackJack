@@ -38,6 +38,9 @@ implements View.OnClickListener{
             R.id.player4_imageView,R.id.player5_imageView,R.id.player6_imageView,R.id.player7_imageView,
             R.id.player8_imageView};
 
+    private int playersHand = 0;
+
+
     //array needed to choose suit
     private int [] suits = {1,2,3,4};
 
