@@ -95,11 +95,7 @@ implements View.OnClickListener{
     }
 
     public void deal(){
-
-        chooseSuit();
-        chooseCard();
-
-
+        setImageView(cardDrawables[chooseSuit()][chooseCard()],playersHand);
 
         playersHand++;
 
