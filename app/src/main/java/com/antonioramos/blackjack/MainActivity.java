@@ -16,23 +16,24 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity
 implements View.OnClickListener{
 
-    private int [] heartsImage = {R.drawable.heart_ace, R.drawable.heart_two, R.drawable.heart_three,
+    private int [][] cardDrawables = {{R.drawable.heart_ace, R.drawable.heart_two, R.drawable.heart_three,
             R.drawable.heart_four,R.drawable.heart_five,R.drawable.heart_six,R.drawable.heart_seven,
             R.drawable.heart_eight,R.drawable.heart_nine,R.drawable.heart_ten,
-            R.drawable.heart_jack, R.drawable.heart_queen,R.drawable.heart_king};
-    private int [] diamondImage = {R.drawable.diamonds_ace, R.drawable.diamonds_two,R.drawable.diamonds_three,
+            R.drawable.heart_jack, R.drawable.heart_queen,R.drawable.heart_king},
+            {R.drawable.diamonds_ace, R.drawable.diamonds_two,R.drawable.diamonds_three,
             R.drawable.diamonds_four,R.drawable.diamonds_five, R.drawable.diamonds_six,
             R.drawable.diamonds_seven, R.drawable.diamonds_eight, R.drawable.diamonds_nine,
             R.drawable.diamonds_ten, R.drawable.diamonds_jack, R.drawable.diamonds_queen,
-            R.drawable.diamonds_king};
-    private int [] spadesImage = {R.drawable.spades_ace,R.drawable.spades_two, R.drawable.spades_three,
+            R.drawable.diamonds_king},
+            {R.drawable.spades_ace,R.drawable.spades_two, R.drawable.spades_three,
             R.drawable.spades_four,R.drawable.spades_five,R.drawable.spades_six,R.drawable.spades_seven,
             R.drawable.spades_eight,R.drawable.spades_nine, R.drawable.spades_ten,
-            R.drawable.spades_jack, R.drawable.spades_queen,R.drawable.spades_king};
-    private int [] clubsImage = {R.drawable.clubs_ace, R.drawable.clubs_two,R.drawable.clubs_three,
+            R.drawable.spades_jack, R.drawable.spades_queen,R.drawable.spades_king},
+            {R.drawable.clubs_ace, R.drawable.clubs_two,R.drawable.clubs_three,
             R.drawable.clubs_four,R.drawable.clubs_five, R.drawable.clubs_six,R.drawable.clubs_seven,
             R.drawable.clubs_eight, R.drawable.clubs_nine, R.drawable.clubs_ten,
-            R.drawable.clubs_jack, R.drawable.clubs_queen, R.drawable.clubs_king};
+            R.drawable.clubs_jack, R.drawable.clubs_queen, R.drawable.clubs_king}};
+
 
 
     private  int [] playersCards ={R.id.player1_imageView, R.id.player2_imageView,R.id.player3_imageView,
