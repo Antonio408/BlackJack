@@ -38,16 +38,15 @@ implements View.OnClickListener{
             R.drawable.clubs_jack, R.drawable.clubs_queen, R.drawable.clubs_king}};
 
 
-
+    //load player's imageView id into playersCards array
     private  int [] playersCards ={R.id.player1_imageView, R.id.player2_imageView,R.id.player3_imageView,
             R.id.player4_imageView,R.id.player5_imageView,R.id.player6_imageView,R.id.player7_imageView,
             R.id.player8_imageView};
 
-    private int playersHand = 0;
+    //variable will keep track of number of card been dealt
+    private int currentCard = 0;
 
-
-
-
+    //Declare and assign Random object to variable r
     Random r = new Random();
 
 
@@ -57,6 +56,7 @@ implements View.OnClickListener{
         setContentView(R.layout.table_design);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         Button newDeal = (Button)findViewById(R.id.deal_button);
         newDeal.setOnClickListener(this);
@@ -107,25 +107,25 @@ implements View.OnClickListener{
         }
 
     }
-    //Method will call chooseSuit and chooseCard method to generate player's dealt card
-    //and display card incorrect imageView. Method will also increment currentCard variable.
+    //Method will call chooseSuit() and chooseCard() to generate player's dealt card
+    //and display card in the correct imageView. Method will also increment currentCard variable.
     public void hit(){
-        if(playersHand <= 7) {
-            ImageView card = (ImageView)findViewById(playersCards[playersHand]);
-            setImageView(cardDrawables[chooseSuit()][chooseCard()], playersCards[playersHand]);
+        if(currentCard <= 7) {
+            ImageView card = (ImageView)findViewById(playersCards[currentCard]);
+            setImageView(cardDrawables[chooseSuit()][chooseCard()], playersCards[currentCard]);
             card.setVisibility(View.VISIBLE);
-            playersHand++;
+            currentCard++;
         }
     }
 
     public void deal(){
         TextView bet_tv= (TextView)findViewById(R.id.bet_textView);
 
-        if(playersHand < 2){
+        if(currentCard < 2){
             for(int i = 0; i < 2; i++){
-                setImageView(cardDrawables[chooseSuit()][chooseCard()],playersCards[playersHand]);
+                setImageView(cardDrawables[chooseSuit()][chooseCard()],playersCards[currentCard]);
 
-                playersHand++;
+                currentCard++;
             }
         }
         else{
