@@ -99,18 +99,18 @@ implements View.OnClickListener{
     }
 
     public void hit(){
-
+        
     }
 
     public void deal(){
-        if(playersHand == 2){
-           playersHand = 0;
-       }
-        setImageView(cardDrawables[chooseSuit()][chooseCard()],playersCards[playersHand]);
+        TextView bet_tv= (TextView)findViewById(R.id.bet_textView);
 
-        playersHand++;
-
-
+        if(bet_tv == null){
+            for(int i = 0; i < 2; i++){
+                setImageView(cardDrawables[chooseSuit()][chooseCard()],playersCards[playersHand]);
+                playersHand++;
+            }
+        }
     }
 
     public void setImageView(int drawableId, int imageId){
