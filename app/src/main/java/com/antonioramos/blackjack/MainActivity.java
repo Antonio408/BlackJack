@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.Random;
 
@@ -93,14 +94,21 @@ implements View.OnClickListener{
     }
 
     public void deal(){
-        Button hit = (Button) findViewById(R.id.hit_button);
 
         chooseSuit();
         chooseCard();
 
 
+
+        playersHand++;
+
+
     }
 
+    public void setImageView(int drawableId, int imageId){
+        ImageView imageView = (ImageView)findViewById(imageId);
+        imageView.setImageResource(drawableId);
+    }
     public int chooseSuit(){
         int set_suit = r.nextInt(4 -1 )+1;
         return set_suit;
