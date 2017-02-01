@@ -20,15 +20,18 @@ implements View.OnClickListener{
             R.drawable.heart_four,R.drawable.heart_five,R.drawable.heart_six,R.drawable.heart_seven,
             R.drawable.heart_eight,R.drawable.heart_nine,R.drawable.heart_ten,
             R.drawable.heart_jack, R.drawable.heart_queen,R.drawable.heart_king},
+
             {R.drawable.diamonds_ace, R.drawable.diamonds_two,R.drawable.diamonds_three,
             R.drawable.diamonds_four,R.drawable.diamonds_five, R.drawable.diamonds_six,
             R.drawable.diamonds_seven, R.drawable.diamonds_eight, R.drawable.diamonds_nine,
             R.drawable.diamonds_ten, R.drawable.diamonds_jack, R.drawable.diamonds_queen,
             R.drawable.diamonds_king},
+
             {R.drawable.spades_ace,R.drawable.spades_two, R.drawable.spades_three,
             R.drawable.spades_four,R.drawable.spades_five,R.drawable.spades_six,R.drawable.spades_seven,
             R.drawable.spades_eight,R.drawable.spades_nine, R.drawable.spades_ten,
             R.drawable.spades_jack, R.drawable.spades_queen,R.drawable.spades_king},
+
             {R.drawable.clubs_ace, R.drawable.clubs_two,R.drawable.clubs_three,
             R.drawable.clubs_four,R.drawable.clubs_five, R.drawable.clubs_six,R.drawable.clubs_seven,
             R.drawable.clubs_eight, R.drawable.clubs_nine, R.drawable.clubs_ten,
@@ -43,8 +46,7 @@ implements View.OnClickListener{
     private int playersHand = 0;
 
 
-    //array needed to choose suit
-    private int [] suits = {1,2,3,4};
+
 
     Random r = new Random();
 
@@ -58,6 +60,8 @@ implements View.OnClickListener{
 
         Button newDeal = (Button)findViewById(R.id.deal_button);
         newDeal.setOnClickListener(this);
+        Button hit = (Button) findViewById(R.id.hit_button);
+        hit.setOnClickListener(this);
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -95,21 +99,37 @@ implements View.OnClickListener{
     @Override
     public void onClick(View view) {
 
-        deal();
-    }
+        if(view.getId() == R.id.deal_button){
+            deal();
+        }
+       else{
+            hit();
+        }
 
+    }
+    //Method will call chooseSuit and chooseCard method to generate player's dealt card
+    //and display card incorrect imageView. Method will also increment currentCard variable.
     public void hit(){
-        
+        if(playersHand <= 7) {
+            ImageView card = (ImageView)findViewById(playersCards[playersHand]);
+            setImageView(cardDrawables[chooseSuit()][chooseCard()], playersCards[playersHand]);
+            card.setVisibility(View.VISIBLE);
+            playersHand++;
+        }
     }
 
     public void deal(){
         TextView bet_tv= (TextView)findViewById(R.id.bet_textView);
 
-        if(bet_tv == null){
+        if(playersHand < 2){
             for(int i = 0; i < 2; i++){
                 setImageView(cardDrawables[chooseSuit()][chooseCard()],playersCards[playersHand]);
+
                 playersHand++;
             }
+        }
+        else{
+            bet_tv.setText("place bet");
         }
     }
 
@@ -118,7 +138,7 @@ implements View.OnClickListener{
         imageView.setImageResource(drawableId);
     }
     public int chooseSuit(){
-        int set_suit = r.nextInt(4 - 0 )+0;
+        int set_suit = r.nextInt(4 - 0)+0;
         return set_suit;
     }
     public int chooseCard(){

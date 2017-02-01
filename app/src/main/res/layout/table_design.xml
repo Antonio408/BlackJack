@@ -183,7 +183,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ace"
+            app:srcCompat="@drawable/spades_ace"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:id="@+id/player1_imageView"
@@ -192,7 +192,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/heart_ace"
+            app:srcCompat="@drawable/spades_king"
             android:id="@+id/player2_imageView"
             android:adjustViewBounds="true"
             android:layout_marginStart="20dp"
