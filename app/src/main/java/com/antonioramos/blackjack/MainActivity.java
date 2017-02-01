@@ -46,6 +46,8 @@ implements View.OnClickListener{
     //variable will keep track of number of card been dealt
     private int currentCard = 0;
 
+    private int newBet = 0;
+
     //Declare and assign Random object to variable r
     Random r = new Random();
 
@@ -102,36 +104,57 @@ implements View.OnClickListener{
         if(view.getId() == R.id.deal_button){
             deal();
         }
-       else{
+       else if (view.getId() == R.id.hit_button){
             hit();
         }
-
+        else {
+            //*************stay button ***************
+        }
     }
+
     //Method will call chooseSuit() and chooseCard() to generate player's dealt card
     //and display card in the correct imageView. Method will also increment currentCard variable.
     public void hit(){
         if(currentCard <= 7) {
-            ImageView card = (ImageView)findViewById(playersCards[currentCard]);
+            ImageView displayCard = (ImageView)findViewById(playersCards[currentCard]);
+
+            //cardDrawables[chooseSuit()][chooseCard()] selects card and
+            //playersCards[currentCard] selects current imageView
             setImageView(cardDrawables[chooseSuit()][chooseCard()], playersCards[currentCard]);
-            card.setVisibility(View.VISIBLE);
+            displayCard.setVisibility(View.VISIBLE);
             currentCard++;
         }
     }
 
     public void deal(){
+        /*******************************************************
+         * ***** textView created for debugging  purposes ***
+         *********************************************************/
         TextView bet_tv= (TextView)findViewById(R.id.bet_textView);
 
-        if(currentCard < 2){
+       //***** condition to play game ******
+        if(newBet > 0){
+            //for loop will generate player's first two card
             for(int i = 0; i < 2; i++){
+                //cardDrawables[chooseSuit()][chooseCard()] selects card and
+                //playersCards[currentCard] selects current imageView
                 setImageView(cardDrawables[chooseSuit()][chooseCard()],playersCards[currentCard]);
-
                 currentCard++;
+
+                /**********************************************************
+                 * ****** newBet increased for debugging  purposes ********
+                 *********************************************************/
+                newBet = 1;
             }
         }
+        /*******************************************************
+         * ****** else created for debugging  purposes ************
+         *********************************************************/
         else{
             bet_tv.setText("place bet");
         }
     }
+
     //method will set selected drawable to current imageView
     public void setImageView(int drawableId, int imageId){
         ImageView imageView = (ImageView)findViewById(imageId);
