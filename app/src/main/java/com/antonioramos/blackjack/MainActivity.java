@@ -113,11 +113,11 @@ implements View.OnClickListener{
         imageView.setImageResource(drawableId);
     }
     public int chooseSuit(){
-        int set_suit = r.nextInt(3 -1 )+0;
+        int set_suit = r.nextInt(4 - 0 )+0;
         return set_suit;
     }
     public int chooseCard(){
-        int set_card = r.nextInt(12-1)+0;
+        int set_card = r.nextInt(13-0)+0;
         return set_card;
     }
 }
