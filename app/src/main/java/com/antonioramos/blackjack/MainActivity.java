@@ -55,6 +55,9 @@ implements View.OnClickListener{
         setContentView(R.layout.table_design);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Button newDeal = (Button)findViewById(R.id.deal_button);
+        newDeal.setOnClickListener(this);
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -91,11 +94,14 @@ implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-
+        deal();
     }
 
     public void deal(){
-        setImageView(cardDrawables[chooseSuit()][chooseCard()],playersHand);
+       if(playersHand == 2){
+           playersHand = 0;
+       }
+        setImageView(cardDrawables[chooseSuit()][chooseCard()],playersCards[playersHand]);
 
         playersHand++;
 
@@ -107,11 +113,11 @@ implements View.OnClickListener{
         imageView.setImageResource(drawableId);
     }
     public int chooseSuit(){
-        int set_suit = r.nextInt(4 -1 )+1;
+        int set_suit = r.nextInt(3 -1 )+0;
         return set_suit;
     }
     public int chooseCard(){
-        int set_card = r.nextInt(13-1)+1;
+        int set_card = r.nextInt(12-1)+0;
         return set_card;
     }
 }
