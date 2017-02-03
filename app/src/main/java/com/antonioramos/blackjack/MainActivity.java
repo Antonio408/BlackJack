@@ -36,6 +36,30 @@ implements View.OnClickListener{
             R.drawable.clubs_four,R.drawable.clubs_five, R.drawable.clubs_six,R.drawable.clubs_seven,
             R.drawable.clubs_eight, R.drawable.clubs_nine, R.drawable.clubs_ten,
             R.drawable.clubs_jack, R.drawable.clubs_queen, R.drawable.clubs_king}};
+    
+    private int [] [] cardStrings = {{R.string.ace_of_hearts, R.string.two_of_hearts,
+            R.string.three_of_hearts, R.string.four_of_hearts,R.string.five_of_hearts,
+            R.string.six_of_hearts,R.string.seven_of_hearts,R.string.eight_of_hearts,
+            R.string.nine_of_hearts,R.string.ten_of_hearts,R.string.jack_of_hearts,
+            R.string.queen_of_hearts,R.string.king_of_hearts},
+
+            {R.string.ace_of_diamonds,R.string.two_of_diamonds,R.string.three_of_diamonds,
+            R.string.four_of_diamonds,R.string.five_of_diamonds,R.string.six_of_diamonds,
+            R.string.seven_of_diamonds,R.string.eight_of_diamonds,
+            R.string.nine_of_diamonds,R.string.ten_of_diamonds,R.string.jack_of_diamonds,
+            R.string.queen_of_diamonds,R.string.king_of_diamonds},
+
+            {R.string.ace_of_spades,R.string.two_of_spades, R.string.three_of_spades,
+            R.string.four_of_spades,R.string.five_of_spades,R.string.six_of_spades,
+            R.string.seven_of_spades,R.string.eight_of_spades,R.string.nine_of_spades,
+            R.string.ten_of_spades,R.string.jack_of_spades, R.string.queen_of_spades,
+            R.string.king_of_spades},
+
+            {R.string.ace_of_clubs, R.string.two_of_clubs,R.string.three_of_clubs,
+            R.string.four_of_clubs,R.string.five_of_clubs, R.string.six_of_spades,
+            R.string.seven_of_clubs,R.string.eight_of_clubs, R.string.nine_of_clubs,
+            R.string.ten_of_clubs,R.string.jack_of_clubs, R.string.queen_of_clubs,
+            R.string.king_of_clubs}};
 
 
     //load player's imageView id into playersCards array
