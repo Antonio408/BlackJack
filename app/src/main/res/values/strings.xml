@@ -53,6 +53,10 @@
     <string name="jack_of_hearts">Jack of hearts</string>
     <string name="queen_of_hearts">Queen of hearts</string>
     <string name="king_of_hearts">King of hearts</string>
+    <string name="dealerTotal_text">Dealer 1 or 11</string>
+    <string name="playerTotal_text">Player 9 or 19</string>
+    <string name="bank_text">Bank</string>
+    <string name="bank_amount">1000</string>
     <string name="bet_text">Bet</string>
     <string name="deal_text">Deal</string>
     <string name="hit_text">Hit</string>
