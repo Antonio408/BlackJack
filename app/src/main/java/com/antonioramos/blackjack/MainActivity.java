@@ -1,8 +1,6 @@
 package com.antonioramos.blackjack;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -36,7 +34,8 @@ implements View.OnClickListener{
             R.drawable.clubs_four,R.drawable.clubs_five, R.drawable.clubs_six,R.drawable.clubs_seven,
             R.drawable.clubs_eight, R.drawable.clubs_nine, R.drawable.clubs_ten,
             R.drawable.clubs_jack, R.drawable.clubs_queen, R.drawable.clubs_king}};
-    
+
+        // Variable to hold content description ids for accessibilty
     private int [] [] cardStrings = {{R.string.ace_of_hearts, R.string.two_of_hearts,
             R.string.three_of_hearts, R.string.four_of_hearts,R.string.five_of_hearts,
             R.string.six_of_hearts,R.string.seven_of_hearts,R.string.eight_of_hearts,
@@ -61,16 +60,43 @@ implements View.OnClickListener{
             R.string.ten_of_clubs,R.string.jack_of_clubs, R.string.queen_of_clubs,
             R.string.king_of_clubs}};
 
+    // Variables to save and restore state
+    private static final String PLAYER_CARD_SUIT = "playerCardSuit";
+    private static final String DEALER_CARD_SUIT = "dealerCardSuit";
+    private static final String PLAYER_CARD_TYPE = "playerCardType";
+    private static final String DEALER_CARD_TYPE = "dealerCardType";
+    private static final String DEALER_HOLD_CARD_SHOWN = "dealerHoldCardShown";
+    private static final String BET = "newBet";
+    private static final String BANK = "bamk";
 
     //load player's imageView id into playersCards array
     private  int [] playersCards ={R.id.player1_imageView, R.id.player2_imageView,R.id.player3_imageView,
             R.id.player4_imageView,R.id.player5_imageView,R.id.player6_imageView,R.id.player7_imageView,
-            R.id.player8_imageView};
+            R.id.player8_imageView, R.id.player9_imageView, R.id.player10_imageView, R.id.player11_imageView};
+
+    //load player's imageView id into playersCards array
+    private int [] dealerCards = {R.id.imageViewDealer01, R.id.imageViewDealer02,
+            R.id.imageViewDealer03, R.id.imageViewDealer04, R.id.imageViewDealer05,
+            R.id.imageViewDealer06, R.id.imageViewDealer07, R.id.imageViewDealer08,
+            R.id.imageViewDealer09, R.id.imageViewDealer10, R.id.imageViewDealer11};
+
+    // variables to keep track of cards dealt
+    private int [] playerCardSuit = {0,0,0,0,0,0,0,0,0,0,0};
+
+    private int [] dealerCardSuit = {0,0,0,0,0,0,0,0,0,0,0};
+
+    private int [] playerCardType = {0,0,0,0,0,0,0,0,0,0,0};
+
+    private int [] dealerCardType = {0,0,0,0,0,0,0,0,0,0,0};
+
+    private boolean dealerHoldCardShown = false;
 
     //variable will keep track of number of card been dealt
     private int currentCard = 0;
 
     private int newBet = 0;
+
+    private int bank = 1000;
 
     //Declare and assign Random object to variable r
     Random r = new Random();
@@ -88,15 +114,7 @@ implements View.OnClickListener{
         newDeal.setOnClickListener(this);
         Button hit = (Button) findViewById(R.id.hit_button);
         hit.setOnClickListener(this);
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        })*/
+
 
     }
 
@@ -117,6 +135,8 @@ implements View.OnClickListener{
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_new_game) {
+            newGame();
         }
 
         return super.onOptionsItemSelected(item);
@@ -135,6 +155,40 @@ implements View.OnClickListener{
             //*************stay button ***************
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        /* save member variables in order to restore game state later */
+        outState.putIntArray(PLAYER_CARD_SUIT, playerCardSuit);
+        outState.putIntArray(DEALER_CARD_SUIT, dealerCardSuit);
+        outState.putIntArray(PLAYER_CARD_TYPE, playerCardType);
+        outState.putIntArray(DEALER_CARD_TYPE, dealerCardType);
+        outState.putBoolean(DEALER_HOLD_CARD_SHOWN, dealerHoldCardShown);
+        outState.putInt(BET, newBet);
+        outState.putInt(BANK, bank);
+
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        /* retrieve member variables to restore game state */
+        playerCardSuit = savedInstanceState.getIntArray(PLAYER_CARD_SUIT);
+        dealerCardSuit = savedInstanceState.getIntArray(DEALER_CARD_SUIT);
+        playerCardType = savedInstanceState.getIntArray(PLAYER_CARD_TYPE);
+        dealerCardType = savedInstanceState.getIntArray(DEALER_CARD_TYPE);
+        dealerHoldCardShown = savedInstanceState.getBoolean(DEALER_HOLD_CARD_SHOWN);
+        newBet = savedInstanceState.getInt(BET);
+        bank = savedInstanceState.getInt(BANK);
+
+        /* process variables to proper state of the game */
+        restoreGame();
+    }
+
 
     //Method will call chooseSuit() and chooseCard() to generate player's dealt card
     //and display card in the correct imageView. Method will also increment currentCard variable.
@@ -194,5 +248,23 @@ implements View.OnClickListener{
     // 0=ace, 1=2, 2=3, 3=4, 4=5, 5=6, 7=8, 8=9, 9=10, 10=jack, 11=queen, 12=king
     public int chooseCard(){
        return r.nextInt(13-0)+0;
+    }
+
+    // Method to reset all variables for a new game
+    private void newGame() {
+        for (int i = 0; i < 11; i++){
+            playerCardSuit[i] = 0;
+            dealerCardSuit[i] = 0;
+            playerCardType[i] = 0;
+            dealerCardType[i] = 0;
+            dealerHoldCardShown = false;
+            currentCard = 0;
+            newBet = 0;
+        }
+        restoreGame();
+    }
+
+    private void restoreGame() {
+        // Todo put restore code here
     }
 }

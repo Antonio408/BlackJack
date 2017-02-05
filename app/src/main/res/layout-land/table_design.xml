@@ -409,15 +409,22 @@
             android:cropToPadding="false"
             android:adjustViewBounds="true" />
 
-        <TextView
-            android:text="@string/bet_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/bet_textView"
-            android:textSize="30sp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
             android:layout_toEndOf="@+id/coin100_imageButton"
-            android:layout_toStartOf="@+id/bank_textView"
-            android:layout_marginStart="37dp" />
+            android:layout_toStartOf="@+id/bank_textView">
+
+            <TextView
+                android:text="@string/bet_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bet_textView"
+                android:textSize="30sp"
+
+                android:layout_marginStart="37dp" />
+
+        </RelativeLayout>
 
         <TextView
             android:text="@string/bank_text"
