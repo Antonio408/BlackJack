@@ -120,6 +120,8 @@ implements View.OnClickListener{
         newDeal.setOnClickListener(this);
         Button hit = (Button) findViewById(R.id.hit_button);
         hit.setOnClickListener(this);
+        Button stay =(Button) findViewById(R.id.stay_button);
+        stay.setOnClickListener(this);
 
 
     }
@@ -162,7 +164,7 @@ implements View.OnClickListener{
             hit();
         }
         else {
-            //*************stay button ***************
+            computersTurn();
         }
     }
 
@@ -204,29 +206,32 @@ implements View.OnClickListener{
     //and display card in the correct imageView. Method will also increment currentCard variable.
     public void hit(){
         TextView bet_tv= (TextView)findViewById(R.id.playerTotal_textView);
-        if(currentCard <= 7) {
-            ImageView displayCard = (ImageView)findViewById(playersCards[currentCard]);
+       if(checkScore(players_score)) {
+           if (currentCard <= 7) {
+               ImageView displayCard = (ImageView) findViewById(playersCards[currentCard]);
 
-            cardValue= chooseCard();
+               cardValue = chooseCard();
 
-            //cardDrawables[chooseSuit()][chooseCard()] selects card and
-            //playersCards[currentCard] selects current imageView
-            setImageView(cardDrawables[chooseSuit()][cardValue], playersCards[currentCard]);
-            displayCard.setVisibility(View.VISIBLE);
+               //cardDrawables[chooseSuit()][chooseCard()] selects card and
+               //playersCards[currentCard] selects current imageView
+               setImageView(cardDrawables[chooseSuit()][cardValue], playersCards[currentCard]);
+               displayCard.setVisibility(View.VISIBLE);
 
-            players_score = players_score + calculateScore(cardValue,players_score);;
+               players_score = players_score + calculateScore(cardValue, players_score);
+               ;
 
-            bet_tv.setText("Total score "+players_score);
-            currentCard++;
-            
-        }
+               bet_tv.setText("Total score " + players_score);
+               currentCard++;
+
+           }
+       }
     }
 
     public void deal(){
         /*******************************************************
          * ***** textView created for debugging  purposes ***
          *********************************************************/
-        TextView bet_tv= (TextView)findViewById(R.id.playerTotal_textView);
+        TextView tv= (TextView)findViewById(R.id.playerTotal_textView);
 
 
         players_score = 0;
@@ -246,26 +251,29 @@ implements View.OnClickListener{
 
                 players_score = players_score + calculateScore(cardValue,players_score);
 
-                bet_tv.setText("Total score "+players_score);
+                tv.setText("Total score "+players_score);
 
 
-                /**********************************************************
-                 * ****** newBet increased for debugging  purposes ********
-                 *********************************************************/
 
-
-                newBet = 1;
 
                 currentCard++;
 
             }
+            tv =(TextView) findViewById(R.id.dealerTotal_textView);
+            setImageView(cardDrawables[chooseSuit()][cardValue],dealerCards[0]);
 
+            computers_score = computers_score + calculateScore(cardValue,computers_score);
+
+            tv.setText("Total score "+computers_score);
+            if(players_score == 21){
+                computersTurn();
+            }
         }
         /*******************************************************
          * ****** else created for debugging  purposes ************
          *********************************************************/
         else{
-            bet_tv.setText("place bet");
+            tv.setText("place bet");
         }
     }
 
@@ -328,5 +336,39 @@ implements View.OnClickListener{
         }else{
             return 11;
         }
+    }
+    private boolean checkScore(int score){
+        if(score >= 21){
+            return false;
+        }
+        else return true;
+    }
+    private void computersTurn(){
+        TextView tv= (TextView)findViewById(R.id.dealerTotal_textView);
+        currentCard = 1;
+        while(currentCard < 10){
+            if(checkScore(computers_score)) {
+
+                ImageView displayCard = (ImageView) findViewById(dealerCards[currentCard]);
+
+                cardValue = chooseCard();
+
+                //cardDrawables[chooseSuit()][chooseCard()] selects card and
+                //playersCards[currentCard] selects current imageView
+                setImageView(cardDrawables[chooseSuit()][cardValue], dealerCards[currentCard]);
+                displayCard.setVisibility(View.VISIBLE);
+
+                computers_score = computers_score + calculateScore(cardValue, computers_score);
+
+
+                tv.setText("Total score " + computers_score);
+
+
+
+            }
+            currentCard++;
+
+        }
+
     }
 }
