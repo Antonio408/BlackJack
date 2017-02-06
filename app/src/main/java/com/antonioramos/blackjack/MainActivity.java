@@ -100,6 +100,8 @@ implements View.OnClickListener{
     private int playerTotal;
     private int dealerTotal;
 
+    private int cardSuite;
+
     //Declare and assign Random object to variable r
     Random r = new Random();
     int players_score = 0;
@@ -218,26 +220,30 @@ implements View.OnClickListener{
                ImageView displayCard = (ImageView) findViewById(playersCards[currentCard]);
 
                cardValue = chooseCard();
+               cardSuite = chooseSuit();
 
                //cardDrawables[chooseSuit()][chooseCard()] selects card and
                //playersCards[currentCard] selects current imageView
-               setImageView(cardDrawables[chooseSuit()][cardValue], playersCards[currentCard]);
+               setImageView(cardDrawables[cardSuite][cardValue], playersCards[currentCard]);
                displayCard.setVisibility(View.VISIBLE);
 
                players_score = players_score + calculateScore(cardValue, players_score);
-               ;
+               savePlayersHand(cardSuite, cardValue, currentCard);
 
                bet_tv.setText("Total score " + players_score);
                currentCard++;
+               if(players_score > 21){
+                   computersTurn();
+               }
 
            }
+
        }
+
     }
 
     public void deal(){
-        /*******************************************************
-         * ***** textView created for debugging  purposes ***
-         *********************************************************/
+
         TextView tv= (TextView)findViewById(R.id.playerTotal_textView);
 
 
@@ -245,6 +251,7 @@ implements View.OnClickListener{
         newBet = 0;
         //*********************************************************************************************************
         currentCard = 0;
+
         //**************************************************************************************************
         //***** condition to play game ******
         if(newBet == 0){
@@ -253,23 +260,27 @@ implements View.OnClickListener{
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
                 //playersCards[currentCard] selects current imageView
                cardValue= chooseCard();
+                cardSuite = chooseSuit();
 
-                setImageView(cardDrawables[chooseSuit()][cardValue],playersCards[currentCard]);
+                setImageView(cardDrawables[cardSuite][cardValue],playersCards[currentCard]);
 
                 players_score = players_score + calculateScore(cardValue,players_score);
 
                 tv.setText("Total score "+players_score);
-
-
+                savePlayersHand(cardSuite, cardValue, currentCard);
                 currentCard++;
 
             }
+            cardValue= chooseCard();
+            cardSuite = chooseSuit();
             tv =(TextView) findViewById(R.id.dealerTotal_textView);
-            setImageView(cardDrawables[chooseSuit()][cardValue],dealerCards[0]);
+            setImageView(cardDrawables[cardSuite][cardValue],dealerCards[0]);
+            saveDealersHand(cardSuite, cardValue, 0);
+
 
             computers_score = computers_score + calculateScore(cardValue,computers_score);
 
-            tv.setText("Total score "+computers_score);
+            tv.setText("Total score "+ computers_score);
             if(players_score == 21){
                 computersTurn();
             }
@@ -281,6 +292,16 @@ implements View.OnClickListener{
             tv.setText("place bet");
         }
     }
+    public void savePlayersHand(int suit, int value, int currentHand){
+        playerCardType[currentHand] = value;
+        playerCardSuit[currentHand] = suit;
+    }
+    public void saveDealersHand(int suit, int value, int currentHand){
+        dealerCardType[currentHand] = value;
+        dealerCardSuit[currentHand] = suit;
+
+    }
+
 
     //method will set selected drawable to current imageView
     public void setImageView(int drawableId, int imageId){
@@ -464,6 +485,8 @@ implements View.OnClickListener{
             if(checkScore(computers_score)&& bestHand) {
                 ImageView displayCard = (ImageView) findViewById(dealerCards[currentCard]);
                 cardValue = chooseCard();
+                cardSuite = chooseSuit();
+                saveDealersHand(cardSuite, cardValue, currentCard);
 
 
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
