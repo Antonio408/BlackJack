@@ -214,14 +214,15 @@ implements View.OnClickListener{
                ImageView displayCard = (ImageView) findViewById(playersCards[currentCard]);
 
                cardValue = chooseCard();
+               cardSuite = chooseSuit();
 
                //cardDrawables[chooseSuit()][chooseCard()] selects card and
                //playersCards[currentCard] selects current imageView
-               setImageView(cardDrawables[chooseSuit()][cardValue], playersCards[currentCard]);
+               setImageView(cardDrawables[cardSuite][cardValue], playersCards[currentCard]);
                displayCard.setVisibility(View.VISIBLE);
 
                players_score = players_score + calculateScore(cardValue, players_score);
-
+               savePlayersHand(cardSuite, cardValue, currentCard);
 
                bet_tv.setText("Total score " + players_score);
                currentCard++;
