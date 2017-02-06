@@ -102,6 +102,7 @@ implements View.OnClickListener{
     Random r = new Random();
     int players_score = 0;
     int computers_score = 0;
+    boolean bestHand = true;
 
     int cardValue;
 
@@ -347,10 +348,12 @@ implements View.OnClickListener{
         TextView tv= (TextView)findViewById(R.id.dealerTotal_textView);
         currentCard = 1;
 
+
         while(currentCard < 10){
-            if(checkScore(computers_score)) {
+            if(checkScore(computers_score)&& bestHand) {
                 ImageView displayCard = (ImageView) findViewById(dealerCards[currentCard]);
                 cardValue = chooseCard();
+
 
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
                 //playersCards[currentCard] selects current imageView
@@ -359,6 +362,9 @@ implements View.OnClickListener{
 
                 computers_score = computers_score + calculateScore(cardValue, computers_score);
                 tv.setText("Total score " + computers_score);
+                if(computers_score >= 18){
+                    bestHand =false;
+                }
 
             }
             currentCard++;
