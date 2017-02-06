@@ -254,8 +254,6 @@ implements View.OnClickListener{
                 tv.setText("Total score "+players_score);
 
 
-
-
                 currentCard++;
 
             }
@@ -343,14 +341,15 @@ implements View.OnClickListener{
         }
         else return true;
     }
+
+
     private void computersTurn(){
         TextView tv= (TextView)findViewById(R.id.dealerTotal_textView);
         currentCard = 1;
+
         while(currentCard < 10){
             if(checkScore(computers_score)) {
-
                 ImageView displayCard = (ImageView) findViewById(dealerCards[currentCard]);
-
                 cardValue = chooseCard();
 
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
@@ -359,11 +358,7 @@ implements View.OnClickListener{
                 displayCard.setVisibility(View.VISIBLE);
 
                 computers_score = computers_score + calculateScore(cardValue, computers_score);
-
-
                 tv.setText("Total score " + computers_score);
-
-
 
             }
             currentCard++;
