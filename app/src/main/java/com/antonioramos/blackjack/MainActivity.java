@@ -100,6 +100,10 @@ implements View.OnClickListener{
 
     //Declare and assign Random object to variable r
     Random r = new Random();
+    int players_score = 0;
+    int computers_score = 0;
+
+    int cardValue;
 
 
     @Override
@@ -108,6 +112,8 @@ implements View.OnClickListener{
         setContentView(R.layout.table_design);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
 
         Button newDeal = (Button)findViewById(R.id.deal_button);
@@ -125,6 +131,10 @@ implements View.OnClickListener{
         return true;
     }
 
+
+
+
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -141,7 +151,7 @@ implements View.OnClickListener{
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     @Override
     public void onClick(View view) {
 
@@ -193,14 +203,22 @@ implements View.OnClickListener{
     //Method will call chooseSuit() and chooseCard() to generate player's dealt card
     //and display card in the correct imageView. Method will also increment currentCard variable.
     public void hit(){
+        TextView bet_tv= (TextView)findViewById(R.id.playerTotal_textView);
         if(currentCard <= 7) {
             ImageView displayCard = (ImageView)findViewById(playersCards[currentCard]);
 
+            cardValue= chooseCard();
+
             //cardDrawables[chooseSuit()][chooseCard()] selects card and
             //playersCards[currentCard] selects current imageView
-            setImageView(cardDrawables[chooseSuit()][chooseCard()], playersCards[currentCard]);
+            setImageView(cardDrawables[chooseSuit()][cardValue], playersCards[currentCard]);
             displayCard.setVisibility(View.VISIBLE);
+
+            players_score = players_score + calculateScore(cardValue,players_score);;
+
+            bet_tv.setText("Total score "+players_score);
             currentCard++;
+            
         }
     }
 
@@ -208,22 +226,40 @@ implements View.OnClickListener{
         /*******************************************************
          * ***** textView created for debugging  purposes ***
          *********************************************************/
-        TextView bet_tv= (TextView)findViewById(R.id.bet_textView);
+        TextView bet_tv= (TextView)findViewById(R.id.playerTotal_textView);
 
-       //***** condition to play game ******
-        if(newBet > 0){
+
+        players_score = 0;
+        newBet = 0;
+        //*********************************************************************************************************
+        currentCard = 0;
+        //**************************************************************************************************
+        //***** condition to play game ******
+        if(newBet == 0){
             //for loop will generate player's first two card
             for(int i = 0; i < 2; i++){
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
                 //playersCards[currentCard] selects current imageView
-                setImageView(cardDrawables[chooseSuit()][chooseCard()],playersCards[currentCard]);
-                currentCard++;
+               cardValue= chooseCard();
+
+                setImageView(cardDrawables[chooseSuit()][cardValue],playersCards[currentCard]);
+
+                players_score = players_score + calculateScore(cardValue,players_score);
+
+                bet_tv.setText("Total score "+players_score);
+
 
                 /**********************************************************
                  * ****** newBet increased for debugging  purposes ********
                  *********************************************************/
+
+
                 newBet = 1;
+
+                currentCard++;
+
             }
+
         }
         /*******************************************************
          * ****** else created for debugging  purposes ************
@@ -266,5 +302,31 @@ implements View.OnClickListener{
 
     private void restoreGame() {
         // Todo put restore code here
+    }
+
+
+
+
+    private int calculateScore(int value,int totalScore ){
+        int checkScore;
+        if(value >=1 && value <=8){
+            return  ++value;
+        }
+        else if(value > 8){
+            return  10;
+        }
+        else{
+               return checkAce(totalScore);
+
+        }
+
+    }
+    private int checkAce (int currentScore){
+
+        if( currentScore + 11 > 21 ) {
+            return 1;
+        }else{
+            return 11;
+        }
     }
 }
