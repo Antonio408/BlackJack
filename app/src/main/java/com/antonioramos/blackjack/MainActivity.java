@@ -374,6 +374,8 @@ implements View.OnClickListener{
             if(checkScore(computers_score)&& bestHand) {
                 ImageView displayCard = (ImageView) findViewById(dealerCards[currentCard]);
                 cardValue = chooseCard();
+                cardSuite = chooseSuit();
+                saveDealersHand(cardSuite, cardValue, currentCard);
 
 
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
