@@ -223,15 +223,18 @@ implements View.OnClickListener{
 
                bet_tv.setText("Total score " + players_score);
                currentCard++;
+               if(players_score > 21){
+                   computersTurn();
+               }
 
            }
+
        }
+
     }
 
     public void deal(){
-        /*******************************************************
-         * ***** textView created for debugging  purposes ***
-         *********************************************************/
+
         TextView tv= (TextView)findViewById(R.id.playerTotal_textView);
 
 
