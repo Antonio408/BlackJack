@@ -100,6 +100,11 @@ implements View.OnClickListener{
 
     //Declare and assign Random object to variable r
     Random r = new Random();
+    int players_score = 0;
+    int computers_score = 0;
+    boolean bestHand = true;
+
+    int cardValue;
 
 
     @Override
@@ -110,10 +115,14 @@ implements View.OnClickListener{
         setSupportActionBar(toolbar);
 
 
+
+
         Button newDeal = (Button)findViewById(R.id.deal_button);
         newDeal.setOnClickListener(this);
         Button hit = (Button) findViewById(R.id.hit_button);
         hit.setOnClickListener(this);
+        Button stay =(Button) findViewById(R.id.stay_button);
+        stay.setOnClickListener(this);
 
 
     }
@@ -125,6 +134,10 @@ implements View.OnClickListener{
         return true;
     }
 
+
+
+
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -141,7 +154,7 @@ implements View.OnClickListener{
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     @Override
     public void onClick(View view) {
 
@@ -152,7 +165,7 @@ implements View.OnClickListener{
             hit();
         }
         else {
-            //*************stay button ***************
+            computersTurn();
         }
     }
 
@@ -193,43 +206,73 @@ implements View.OnClickListener{
     //Method will call chooseSuit() and chooseCard() to generate player's dealt card
     //and display card in the correct imageView. Method will also increment currentCard variable.
     public void hit(){
-        if(currentCard <= 7) {
-            ImageView displayCard = (ImageView)findViewById(playersCards[currentCard]);
+        TextView bet_tv= (TextView)findViewById(R.id.playerTotal_textView);
+       if(checkScore(players_score)) {
+           if (currentCard <= 7) {
+               ImageView displayCard = (ImageView) findViewById(playersCards[currentCard]);
 
-            //cardDrawables[chooseSuit()][chooseCard()] selects card and
-            //playersCards[currentCard] selects current imageView
-            setImageView(cardDrawables[chooseSuit()][chooseCard()], playersCards[currentCard]);
-            displayCard.setVisibility(View.VISIBLE);
-            currentCard++;
-        }
+               cardValue = chooseCard();
+
+               //cardDrawables[chooseSuit()][chooseCard()] selects card and
+               //playersCards[currentCard] selects current imageView
+               setImageView(cardDrawables[chooseSuit()][cardValue], playersCards[currentCard]);
+               displayCard.setVisibility(View.VISIBLE);
+
+               players_score = players_score + calculateScore(cardValue, players_score);
+               ;
+
+               bet_tv.setText("Total score " + players_score);
+               currentCard++;
+
+           }
+       }
     }
 
     public void deal(){
         /*******************************************************
          * ***** textView created for debugging  purposes ***
          *********************************************************/
-        TextView bet_tv= (TextView)findViewById(R.id.bet_textView);
+        TextView tv= (TextView)findViewById(R.id.playerTotal_textView);
 
-       //***** condition to play game ******
-        if(newBet > 0){
+
+        players_score = 0;
+        newBet = 0;
+        //*********************************************************************************************************
+        currentCard = 0;
+        //**************************************************************************************************
+        //***** condition to play game ******
+        if(newBet == 0){
             //for loop will generate player's first two card
             for(int i = 0; i < 2; i++){
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
                 //playersCards[currentCard] selects current imageView
-                setImageView(cardDrawables[chooseSuit()][chooseCard()],playersCards[currentCard]);
+               cardValue= chooseCard();
+
+                setImageView(cardDrawables[chooseSuit()][cardValue],playersCards[currentCard]);
+
+                players_score = players_score + calculateScore(cardValue,players_score);
+
+                tv.setText("Total score "+players_score);
+
+
                 currentCard++;
 
-                /**********************************************************
-                 * ****** newBet increased for debugging  purposes ********
-                 *********************************************************/
-                newBet = 1;
+            }
+            tv =(TextView) findViewById(R.id.dealerTotal_textView);
+            setImageView(cardDrawables[chooseSuit()][cardValue],dealerCards[0]);
+
+            computers_score = computers_score + calculateScore(cardValue,computers_score);
+
+            tv.setText("Total score "+computers_score);
+            if(players_score == 21){
+                computersTurn();
             }
         }
         /*******************************************************
          * ****** else created for debugging  purposes ************
          *********************************************************/
         else{
-            bet_tv.setText("place bet");
+            tv.setText("place bet");
         }
     }
 
@@ -266,5 +309,67 @@ implements View.OnClickListener{
 
     private void restoreGame() {
         // Todo put restore code here
+    }
+
+
+
+
+    private int calculateScore(int value,int totalScore ){
+        int checkScore;
+        if(value >=1 && value <=8){
+            return  ++value;
+        }
+        else if(value > 8){
+            return  10;
+        }
+        else{
+               return checkAce(totalScore);
+
+        }
+
+    }
+    private int checkAce (int currentScore){
+
+        if( currentScore + 11 > 21 ) {
+            return 1;
+        }else{
+            return 11;
+        }
+    }
+    private boolean checkScore(int score){
+        if(score >= 21){
+            return false;
+        }
+        else return true;
+    }
+
+
+    private void computersTurn(){
+        TextView tv= (TextView)findViewById(R.id.dealerTotal_textView);
+        currentCard = 1;
+
+
+        while(currentCard < 10){
+            if(checkScore(computers_score)&& bestHand) {
+                ImageView displayCard = (ImageView) findViewById(dealerCards[currentCard]);
+                cardValue = chooseCard();
+
+
+                //cardDrawables[chooseSuit()][chooseCard()] selects card and
+                //playersCards[currentCard] selects current imageView
+                setImageView(cardDrawables[chooseSuit()][cardValue], dealerCards[currentCard]);
+                displayCard.setVisibility(View.VISIBLE);
+
+                computers_score = computers_score + calculateScore(cardValue, computers_score);
+                tv.setText("Total score " + computers_score);
+                if(computers_score >= 18){
+                    bestHand =false;
+                }
+
+            }
+            currentCard++;
+
+        }
+
     }
 }
