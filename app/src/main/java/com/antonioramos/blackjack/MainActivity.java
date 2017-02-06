@@ -74,7 +74,7 @@ implements View.OnClickListener{
             R.id.player4_imageView,R.id.player5_imageView,R.id.player6_imageView,R.id.player7_imageView,
             R.id.player8_imageView, R.id.player9_imageView, R.id.player10_imageView, R.id.player11_imageView};
 
-    //load player's imageView id into playersCards array
+    //load dealer's imageView id into dealerCards array
     private int [] dealerCards = {R.id.imageViewDealer01, R.id.imageViewDealer02,
             R.id.imageViewDealer03, R.id.imageViewDealer04, R.id.imageViewDealer05,
             R.id.imageViewDealer06, R.id.imageViewDealer07, R.id.imageViewDealer08,
@@ -97,6 +97,8 @@ implements View.OnClickListener{
     private int newBet = 0;
 
     private int bank = 1000;
+    private int playerTotal;
+    private int dealerTotal;
 
     private int cardSuite;
 
@@ -125,7 +127,7 @@ implements View.OnClickListener{
         hit.setOnClickListener(this);
         Button stay =(Button) findViewById(R.id.stay_button);
         stay.setOnClickListener(this);
-
+        newGame();
 
     }
 
@@ -191,17 +193,21 @@ implements View.OnClickListener{
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
+        if (savedInstanceState != null) {
         /* retrieve member variables to restore game state */
-        playerCardSuit = savedInstanceState.getIntArray(PLAYER_CARD_SUIT);
-        dealerCardSuit = savedInstanceState.getIntArray(DEALER_CARD_SUIT);
-        playerCardType = savedInstanceState.getIntArray(PLAYER_CARD_TYPE);
-        dealerCardType = savedInstanceState.getIntArray(DEALER_CARD_TYPE);
-        dealerHoldCardShown = savedInstanceState.getBoolean(DEALER_HOLD_CARD_SHOWN);
-        newBet = savedInstanceState.getInt(BET);
-        bank = savedInstanceState.getInt(BANK);
+            playerCardSuit = savedInstanceState.getIntArray(PLAYER_CARD_SUIT);
+            dealerCardSuit = savedInstanceState.getIntArray(DEALER_CARD_SUIT);
+            playerCardType = savedInstanceState.getIntArray(PLAYER_CARD_TYPE);
+            dealerCardType = savedInstanceState.getIntArray(DEALER_CARD_TYPE);
+            dealerHoldCardShown = savedInstanceState.getBoolean(DEALER_HOLD_CARD_SHOWN);
+            newBet = savedInstanceState.getInt(BET);
+            bank = savedInstanceState.getInt(BANK);
 
         /* process variables to proper state of the game */
-        restoreGame();
+            redrawTable();
+        } else {
+            newGame();
+        }
     }
 
 
@@ -317,19 +323,124 @@ implements View.OnClickListener{
     // Method to reset all variables for a new game
     private void newGame() {
         for (int i = 0; i < 11; i++){
-            playerCardSuit[i] = 0;
-            dealerCardSuit[i] = 0;
-            playerCardType[i] = 0;
-            dealerCardType[i] = 0;
+            playerCardSuit[i] = -1;
+            dealerCardSuit[i] = -1;
+            playerCardType[i] = -1;
+            dealerCardType[i] = -1;
             dealerHoldCardShown = false;
             currentCard = 0;
             newBet = 0;
+            bank = 1000;
         }
-        restoreGame();
+        redrawTable();
     }
 
-    private void restoreGame() {
-        // Todo put restore code here
+    // method to update or restore the game table to display current values in variables
+    private void redrawTable() {
+        boolean playerHasAce = false;
+        boolean dealerHasAce = false;
+        int playerAceValue = 0;
+        int dealerAceValue = 0;
+
+        playerTotal = 0;
+        dealerTotal = 0;
+
+        for (int i = 0; i < 11; i++){
+            // get ImageView interface
+            ImageView iv = (ImageView) findViewById(playersCards[i]);
+            // test if a card is assigned
+            if (playerCardSuit[i] > -1) {
+                playersCards[i] = cardDrawables[playerCardSuit[i]][playerCardType[i]];
+                // Set content description for accessibility
+                iv.setContentDescription(getString(cardStrings[playerCardSuit[1]][playerCardType[i]]));
+                iv.setVisibility(View.VISIBLE);
+                if (playerCardType[i] == 0) {
+                    // Aces
+                    if (playerHasAce) {
+                        playerTotal += 1;
+                    } else {
+                        if (playerTotal < 11) {
+                            playerTotal += 11;
+                            playerAceValue = 11;
+                        } else {
+                            playerTotal += 1;
+                            playerAceValue = 1;
+                        }
+                        playerHasAce = true;
+                    }
+                } else if (playerCardType[i] < 10) {
+                    // cards 2 - 9
+                    playerTotal += playerCardType[i] + 1;
+                } else {
+                    // facecards
+                    playerTotal += 10;
+                }
+            } else {
+                // no card is assigned
+                iv.setVisibility(View.INVISIBLE);
+            }
+            // get ImageView of current card
+            iv = (ImageView) findViewById(dealerCards[i]);
+            // Test if card is assigned
+            if (dealerCardSuit[i] > -1) {
+                // test if hold card is showing
+                if (!(i == 1 && dealerHoldCardShown)) {
+                    // show proper card
+                    dealerCards[i] = cardDrawables[dealerCardSuit[i]][dealerCardType[i]];
+                    // Set Content description for accessibility
+                    iv.setContentDescription(getString(cardStrings[dealerCardSuit[1]][dealerCardType[i]]));
+                    iv.setVisibility(View.VISIBLE);
+                    // Aces
+                    if (dealerCardType[i] == 0) {
+                        if (dealerHasAce) {
+                            dealerTotal += 1;
+                        } else {
+                            if (dealerTotal < 11) {
+                                dealerTotal += 11;
+                                dealerAceValue = 11;
+                            } else {
+                                dealerTotal += 1;
+                                dealerAceValue = 1;
+                            }
+                            dealerHasAce = true;
+                        }
+                        // Cards 2 - 10
+                    } else if (dealerCardType[i] < 10) {
+                        dealerTotal += dealerCardType[i] + 1;
+                    } else {
+                        //aces
+                        dealerTotal += 10;
+                    }
+                } else {
+                    dealerCards[i] = R.drawable.back1;
+                }
+            } else {
+                iv.setVisibility(View.INVISIBLE);
+            }
+        }
+        // adjust for ace if over 21
+        if (playerHasAce && playerAceValue == 11 && playerTotal > 21) {
+            playerTotal -= 10;
+            playerAceValue = 1;
+        }
+        // adjust for ace if over 21
+        if (dealerHasAce && dealerAceValue == 11 && dealerTotal > 21) {
+            dealerTotal -= 10;
+            dealerAceValue = 1;
+        }
+        // add player and dealer totals to table
+        TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
+        if (playerAceValue == 11) {
+            tv.setText("Player " + Integer.toString(playerTotal - 10) + " or " + Integer.toString(playerTotal));
+        } else {
+            tv.setText("Player " + Integer.toString(playerTotal));
+        }
+        tv = (TextView) findViewById(R.id.dealerTotal_textView);
+        if (dealerAceValue == 11) {
+            tv.setText("Dealer " + Integer.toString(dealerTotal - 10) + " or " + Integer.toString(dealerTotal));
+        } else {
+            tv.setText("Dealer " + Integer.toString(dealerTotal));
+        }
     }
 
 
