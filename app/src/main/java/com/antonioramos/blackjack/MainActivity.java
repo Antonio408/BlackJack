@@ -511,18 +511,27 @@ public class MainActivity extends AppCompatActivity
 
     }
     public void checkWinner(){
-        TextView tv =(TextView)findViewById(R.id.textView);
+        int [] message ={R.drawable.winner,R.drawable.loser,R.drawable.draw};
+
         if(playerTotal > dealerTotal){
             bank += newBet *2;
-            tv.setText("Player Wins!!");
+            winnerMessage(message[0]);
         }
         else if(playerTotal < dealerTotal){
             bank -= newBet;
-            tv.setText("Player Loses!!");
+            winnerMessage(message[1]);
         }
         else{
-            tv.setText("No winner !!");
+            winnerMessage(message[2]);
         }
+    }
+    public void winnerMessage(int winner){
+        ImageView im = (ImageView)findViewById(R.id.message_imageView);
+        im.setVisibility(View.VISIBLE);
+        im =(ImageView)findViewById(R.id.winMessage_imageView);
+        im.setImageResource(winner);
+        im.setVisibility(View.VISIBLE);
+
     }
 }
 

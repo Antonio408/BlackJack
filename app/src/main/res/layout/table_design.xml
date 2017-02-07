@@ -241,6 +241,25 @@
             android:layout_above="@+id/bet_textView"
             android:layout_alignStart="@+id/bet_textView" />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toStartOf="@+id/playerTotal_textView"
+            android:id="@+id/message_imageView"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="#087A61"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/winner"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/winMessage_imageView"
+            android:visibility="invisible"/>
+
     </RelativeLayout>
 
     <RelativeLayout
