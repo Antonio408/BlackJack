@@ -77,7 +77,8 @@
             android:layout_marginStart="21dp"
             android:id="@+id/imageViewDealer01"
             android:contentDescription="@string/face_down_playing_card"
-            android:adjustViewBounds="true" />
+            android:adjustViewBounds="true"
+            android:visibility="invisible" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -88,7 +89,8 @@
             android:layout_marginStart="15dp"
             android:layout_alignParentBottom="true"
             android:layout_alignStart="@+id/imageViewDealer01"
-            android:contentDescription="@string/ace_of_spades" />
+            android:contentDescription="@string/ace_of_spades"
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -209,7 +211,8 @@
             android:contentDescription="@string/ace_of_spades"
             android:layout_alignEnd="@+id/player2_imageView"
             android:layout_marginEnd="15dp"
-            android:adjustViewBounds="true" />
+            android:adjustViewBounds="true"
+            android:visibility="invisible" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -220,7 +223,8 @@
             android:adjustViewBounds="true"
             android:layout_alignParentBottom="true"
             android:layout_alignEnd="@+id/player3_imageView"
-            android:layout_marginEnd="15dp" />
+            android:layout_marginEnd="15dp"
+            android:visibility="invisible" />
 
         <ImageView
             android:layout_width="wrap_content"

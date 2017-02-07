@@ -123,11 +123,7 @@ public class MainActivity extends AppCompatActivity
     boolean bestHand = true;
 
     int cardValue;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+
 
 
     @Override
@@ -144,11 +140,11 @@ public class MainActivity extends AppCompatActivity
         hit.setOnClickListener(this);
         Button stay = (Button) findViewById(R.id.stay_button);
         stay.setOnClickListener(this);
-        newGame();
+        if (savedInstanceState == null) {
+            newGame();
+        }
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
     @Override
@@ -206,7 +202,6 @@ public class MainActivity extends AppCompatActivity
         outState.putInt(DEALER_TOTAL, dealerTotal);
 
 
-
         super.onSaveInstanceState(outState);
     }
 
@@ -250,7 +245,7 @@ public class MainActivity extends AppCompatActivity
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
                 //playersCards[currentCard] selects current imageView
                 setImageView(cardDrawables[cardSuite][cardValue], playersCards[currentCard]);
-                displayCard.setVisibility(View.VISIBLE);
+
 
                 players_score = players_score + calculateScore(cardValue, players_score);
                 savePlayersHand(cardSuite, cardValue, currentCard);
@@ -293,14 +288,15 @@ public class MainActivity extends AppCompatActivity
 
                 tv.setText("Total score " + players_score);
                 savePlayersHand(cardSuite, cardValue, currentCard);
-                currentCard++;
+                playerCurrent++;
 
             }
             cardValue = chooseCard();
             cardSuite = chooseSuit();
             tv = (TextView) findViewById(R.id.dealerTotal_textView);
             setImageView(cardDrawables[cardSuite][cardValue], dealerCards[0]);
-            saveDealersHand(cardSuite, cardValue, 0);
+            saveDealersHand(cardSuite, cardValue, dealerCurrent);
+            dealerCurrent++;
 
 
             computers_score = computers_score + calculateScore(cardValue, computers_score);
@@ -333,6 +329,7 @@ public class MainActivity extends AppCompatActivity
     //method will set selected drawable to current imageView
     public void setImageView(int drawableId, int imageId) {
         ImageView imageView = (ImageView) findViewById(imageId);
+        imageView.setVisibility(View.VISIBLE);
         imageView.setImageResource(drawableId);
     }
 
@@ -356,128 +353,46 @@ public class MainActivity extends AppCompatActivity
             iv.setVisibility(View.INVISIBLE);
             iv = (ImageView) findViewById(dealerCards[i]);
             iv.setVisibility(View.INVISIBLE);
-            playerCardSuit[i] = -1;
-            dealerCardSuit[i] = -1;
-            playerCardType[i] = -1;
-            dealerCardType[i] = -1;
+            playerCardSuit[i] = 0;
+            dealerCardSuit[i] = 0;
+            playerCardType[i] = 0;
+            dealerCardType[i] = 0;
             dealerHoldCardShown = false;
             currentCard = 0;
             newBet = 0;
             bank = 1000;
+            playerCurrent = 0;
+            dealerCurrent = 0;
+            playerTotal = 0;
+            dealerTotal = 0;
         }
         redrawTable();
     }
 
     // method to update or restore the game table to display current values in variables
     private void redrawTable() {
-        boolean playerHasAce = false;
-        boolean dealerHasAce = false;
-        int playerAceValue = 0;
-        int dealerAceValue = 0;
-
-        playerTotal = 0;
-        dealerTotal = 0;
-
-        for (int i = 0; i <= playerCurrent; i++) {
+        for (int i = 0; i < playerCurrent; i++) {
             // get ImageView interface
             ImageView displayCard = (ImageView) findViewById(playersCards[i]);
             // test if a card is assigned
             if (playerCardSuit[i] > -1) {
                 setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
-                displayCard.setVisibility(View.VISIBLE);
-
-                // Set content description for accessibility
                 displayCard.setContentDescription(getString(cardStrings[playerCardSuit[1]][playerCardType[i]]));
-                //iv.setVisibility(View.VISIBLE);
-                if (playerCardType[i] == 0) {
-                    // Aces
-                    if (playerHasAce) {
-                        playerTotal += 1;
-                    } else {
-                        if (playerTotal < 11) {
-                            playerTotal += 11;
-                            playerAceValue = 11;
-                        } else {
-                            playerTotal += 1;
-                            playerAceValue = 1;
-                        }
-                        playerHasAce = true;
-                    }
-                } else if (playerCardType[i] < 10) {
-                    // cards 2 - 9
-                    playerTotal += playerCardType[i] + 1;
-                } else {
-                    // facecards
-                    playerTotal += 10;
-                }
-            } else {
-                // no card is assigned
-                displayCard.setVisibility(View.INVISIBLE);
             }
         }
-        for (int i = 0; i<= dealerCurrent; i++) {
+
+        for (int i = 0; i < dealerCurrent; i++) {
             // get ImageView of current card
             ImageView displayCard = (ImageView) findViewById(dealerCards[i]);
-            // Test if card is assigned
-            if (dealerCardSuit[i] > -1) {
-                // test if hold card is showing
-                if (!(i == 1 && dealerHoldCardShown)) {
-                    // show proper card
-                    setImageView(cardDrawables[dealerCardSuit[i]][dealerCardType[i]], dealerCards[i]);
-                    displayCard.setVisibility(View.VISIBLE);
 
-                    // Set content description for accessibility
-                    displayCard.setContentDescription(getString(cardStrings[dealerCardSuit[1]][dealerCardType[i]]));
-                    // Aces
-                    if (dealerCardType[i] == 0) {
-                        if (dealerHasAce) {
-                            dealerTotal += 1;
-                        } else {
-                            if (dealerTotal < 11) {
-                                dealerTotal += 11;
-                                dealerAceValue = 11;
-                            } else {
-                                dealerTotal += 1;
-                                dealerAceValue = 1;
-                            }
-                            dealerHasAce = true;
-                        }
-                        // Cards 2 - 10
-                    } else if (dealerCardType[i] < 10) {
-                        dealerTotal += dealerCardType[i] + 1;
-                    } else {
-                        //aces
-                        dealerTotal += 10;
-                    }
-                } else {
-                    displayCard.setImageDrawable(getDrawable(R.drawable.back1));
-                }
+            if ((i == 0 && dealerHoldCardShown)) {
+                displayCard.setImageDrawable(getDrawable(R.drawable.back1));
             } else {
-                displayCard.setVisibility(View.INVISIBLE);
+                // show proper card
+                setImageView(cardDrawables[dealerCardSuit[i]][dealerCardType[i]], dealerCards[i]);
+                displayCard.setContentDescription(getString(cardStrings[dealerCardSuit[1]][dealerCardType[i]]));
+
             }
-        }
-        // adjust for ace if over 21
-        if (playerHasAce && playerAceValue == 11 && playerTotal > 21) {
-            playerTotal -= 10;
-            playerAceValue = 1;
-        }
-        // adjust for ace if over 21
-        if (dealerHasAce && dealerAceValue == 11 && dealerTotal > 21) {
-            dealerTotal -= 10;
-            dealerAceValue = 1;
-        }
-        // add player and dealer totals to table
-        TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
-        if (playerAceValue == 11) {
-            tv.setText("Player " + Integer.toString(playerTotal - 10) + " or " + Integer.toString(playerTotal));
-        } else {
-            tv.setText("Player " + Integer.toString(playerTotal));
-        }
-        tv = (TextView) findViewById(R.id.dealerTotal_textView);
-        if (dealerAceValue == 11) {
-            tv.setText("Dealer " + Integer.toString(dealerTotal - 10) + " or " + Integer.toString(dealerTotal));
-        } else {
-            tv.setText("Dealer " + Integer.toString(dealerTotal));
         }
     }
 
@@ -541,40 +456,5 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Main Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }
+
