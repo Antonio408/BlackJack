@@ -426,21 +426,21 @@ public class MainActivity extends AppCompatActivity
 
     private void computersTurn() {
         TextView tv = (TextView) findViewById(R.id.dealerTotal_textView);
-        currentCard = 1;
 
 
-        while (currentCard < 10) {
+
+        while (dealerCurrent < 10) {
             if (checkScore(computers_score) && bestHand) {
-                ImageView displayCard = (ImageView) findViewById(dealerCards[currentCard]);
+                ImageView displayCard = (ImageView) findViewById(dealerCards[dealerCurrent]);
                 cardValue = chooseCard();
                 cardSuite = chooseSuit();
-                saveDealersHand(cardSuite, cardValue, currentCard);
+                saveDealersHand(cardSuite, cardValue, dealerCurrent);
 
 
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
                 //playersCards[currentCard] selects current imageView
-                setImageView(cardDrawables[chooseSuit()][cardValue], dealerCards[currentCard]);
-                displayCard.setVisibility(View.VISIBLE);
+                setImageView(cardDrawables[cardSuite][cardValue], dealerCards[dealerCurrent]);
+
 
                 computers_score = computers_score + calculateScore(cardValue, computers_score);
                 tv.setText("Total score " + computers_score);
@@ -449,7 +449,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
             }
-            currentCard++;
+            dealerCurrent++;
 
         }
 
