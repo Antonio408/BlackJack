@@ -449,9 +449,10 @@ public class MainActivity extends AppCompatActivity
             }
 
 
-
+            checkWinner();
         }
         upDateMoney(newBet,bank);
+
     }
 
 
