@@ -400,14 +400,19 @@ public class MainActivity extends AppCompatActivity
 
             }
         }*/
-            if (dealerCurrent > 0) {
-                tv =(TextView)findViewById(R.id.dealerTotal_textView);
-                tv.setText("Dealer "+dealerTotal);
+            tv =(TextView)findViewById(R.id.dealerTotal_textView);
+            tv.setText("Dealer "+dealerTotal);
+            
+
                 for (int i = 0; i < dealerCurrent; i++) {
                     setImageView(cardDrawables[dealerCardSuit[i]][dealerCardType[i]], dealerCards[i]);
                 }
+            if (dealerCurrent == 1) {
+                setImageView(R.drawable.back1,dealerCards[1]);
 
             }
+
+
         }
     }
 
