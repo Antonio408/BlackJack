@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity
 
 
                 players_score = players_score + calculateScore(cardValue, players_score);
-                savePlayersHand(cardSuite, cardValue, currentCard);
+                savePlayersHand(cardSuite, cardValue, playerCurrent);
 
                 bet_tv.setText("Total score " + players_score);
                 playerCurrent++;
@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity
                 players_score = players_score + calculateScore(cardValue, players_score);
 
                 tv.setText("Total score " + players_score);
-                savePlayersHand(cardSuite, cardValue, currentCard);
+                savePlayersHand(cardSuite, cardValue, playerCurrent);
                 playerCurrent++;
 
             }
@@ -369,16 +369,21 @@ public class MainActivity extends AppCompatActivity
 
     // method to update or restore the game table to display current values in variables
     private void redrawTable() {
-        for (int i = 0; i < playerCurrent; i++) {
-            // get ImageView interface
-            ImageView displayCard = (ImageView) findViewById(playersCards[i]);
-            // test if a card is assigned
-            if (playerCardSuit[i] > -1) {
+        if(playerCurrent > 0) {
+            for (int i = 0; i < playerCurrent; i++) {
                 setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
-                displayCard.setContentDescription(getString(cardStrings[playerCardSuit[1]][playerCardType[i]]));
-            }
-        }
 
+
+                // get ImageView interface
+                //ImageView displayCard = (ImageView) findViewById(playersCards[i]);
+                // test if a card is assigned
+                //if (playerCardSuit[i] > -1) {
+                    //setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
+                    //  displayCard.setContentDescription(getString(cardStrings[playerCardSuit[1]][playerCardType[i]]));
+                }
+            }
+
+/*
         for (int i = 0; i < dealerCurrent; i++) {
             // get ImageView of current card
             ImageView displayCard = (ImageView) findViewById(dealerCards[i]);
@@ -391,6 +396,12 @@ public class MainActivity extends AppCompatActivity
                 displayCard.setContentDescription(getString(cardStrings[dealerCardSuit[1]][dealerCardType[i]]));
 
             }
+        }*/
+        if(dealerCurrent > 0){
+            for (int i = 0; i < dealerCurrent; i++) {
+                setImageView(cardDrawables[dealerCardSuit[i]][dealerCardType[i]], dealerCards[i]);
+            }
+
         }
     }
 
@@ -429,8 +440,8 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        while (dealerCurrent < 10) {
-            if (checkScore(computers_score) && bestHand) {
+
+            while(checkScore(computers_score) && bestHand) {
                 ImageView displayCard = (ImageView) findViewById(dealerCards[dealerCurrent]);
                 cardValue = chooseCard();
                 cardSuite = chooseSuit();
@@ -447,11 +458,11 @@ public class MainActivity extends AppCompatActivity
                 if (computers_score >= 18) {
                     bestHand = false;
                 }
-
+                dealerCurrent++;
             }
-            dealerCurrent++;
 
-        }
+
+        
 
     }
 }
