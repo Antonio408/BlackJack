@@ -48,23 +48,26 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ace"
+            app:srcCompat="@drawable/back1"
+
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:id="@+id/imageViewDealer01"
-            android:contentDescription="@string/ace_of_spades"
-            android:adjustViewBounds="true" />
+            android:contentDescription="@string/face_down_playing_card"
+            android:adjustViewBounds="true"
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/back1"
+            app:srcCompat="@drawable/ace"
             android:id="@+id/imageViewDealer02"
             android:adjustViewBounds="true"
             android:layout_marginStart="15dp"
             android:layout_alignParentBottom="true"
             android:layout_alignStart="@+id/imageViewDealer01"
-            android:contentDescription="@string/face_down_playing_card" />
+            android:contentDescription="@string/ace_of_spades"
+            android:visibility="invisible" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -243,7 +246,8 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/player1_imageView"
             android:contentDescription="@string/ace_of_spades"
-            android:adjustViewBounds="true" />
+            android:adjustViewBounds="true"
+            android:visibility="invisible" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -254,7 +258,8 @@
             android:adjustViewBounds="true"
             android:layout_marginStart="20dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/player1_imageView" />
+            android:layout_alignStart="@+id/player1_imageView"
+            android:visibility="invisible" />
 
         <ImageView
             android:layout_width="wrap_content"
