@@ -233,22 +233,22 @@ public class MainActivity extends AppCompatActivity
     public void hit() {
         TextView bet_tv = (TextView) findViewById(R.id.playerTotal_textView);
         if (checkScore(players_score)) {
-            if (currentCard <= 7) {
-                ImageView displayCard = (ImageView) findViewById(playersCards[currentCard]);
+            if (playerCurrent <= 7) {
+
 
                 cardValue = chooseCard();
                 cardSuite = chooseSuit();
 
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
                 //playersCards[currentCard] selects current imageView
-                setImageView(cardDrawables[cardSuite][cardValue], playersCards[currentCard]);
+                setImageView(cardDrawables[cardSuite][cardValue], playersCards[playerCurrent]);
 
 
                 players_score = players_score + calculateScore(cardValue, players_score);
                 savePlayersHand(cardSuite, cardValue, currentCard);
 
                 bet_tv.setText("Total score " + players_score);
-                currentCard++;
+                playerCurrent++;
                 if (players_score > 21) {
                     computersTurn();
                 }
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity
                 cardValue = chooseCard();
                 cardSuite = chooseSuit();
 
-                setImageView(cardDrawables[cardSuite][cardValue], playersCards[currentCard]);
+                setImageView(cardDrawables[cardSuite][cardValue], playersCards[playerCurrent]);
 
                 players_score = players_score + calculateScore(cardValue, players_score);
 
@@ -291,8 +291,9 @@ public class MainActivity extends AppCompatActivity
             cardValue = chooseCard();
             cardSuite = chooseSuit();
             tv = (TextView) findViewById(R.id.dealerTotal_textView);
-            setImageView(cardDrawables[cardSuite][cardValue], dealerCards[0]);
+            setImageView(cardDrawables[cardSuite][cardValue], dealerCards[dealerCurrent]);
             saveDealersHand(cardSuite, cardValue, dealerCurrent);
+            setImageView(R.drawable.back1, dealerCards[1]);
             dealerCurrent++;
 
 
