@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import org.w3c.dom.Text;
 
 import java.util.Random;
 
@@ -90,10 +91,10 @@ public class MainActivity extends AppCompatActivity
             R.id.imageViewDealer09, R.id.imageViewDealer10, R.id.imageViewDealer11};
 
     //load coin buttons id
-    private int [] buttonId = {R.id.deal_button,R.id.hit_button, R.id.stay_button,
-            R.id.coin5_imageButton};
-    private int [] coinButton ={R.id.coin25_imageButton,R.id.coin50_imageButton,
-            R.id.coin100_imageButton};
+    private int [] buttonId = {R.id.deal_button,R.id.hit_button, R.id.stay_button,};
+
+    private int [] coinButton ={ R.id.coin5_imageButton, R.id.coin25_imageButton,
+            R.id.coin50_imageButton, R.id.coin100_imageButton};
 
     // variables to keep track of cards dealt
     private int[] playerCardSuit = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -205,8 +206,17 @@ public class MainActivity extends AppCompatActivity
         }
     }
     public void placeBet(int bet){
-        newBet = newBet + bet;
-        bank = bank - newBet;
+        if(playerCurrent == 0) {
+            newBet = newBet + bet;
+            bank = bank - bet;
+            upDateMoney(newBet, bank);
+        }
+    }
+    public void upDateMoney(int bet1, int bank1){
+        TextView tv=(TextView) findViewById(R.id.bet_textView);
+        tv.setText(Integer.toString(bet1));
+        tv =(TextView)findViewById(R.id.textView5);
+        tv.setText(Integer.toString(bank1));
     }
 
     @Override
@@ -291,14 +301,13 @@ public class MainActivity extends AppCompatActivity
         TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
 
 
-        playerTotal = 0;
-        newBet = 0;
-        //*********************************************************************************************************
-        currentCard = 0;
+        //playerTotal = 0;
 
-        //**************************************************************************************************
+
+
+
         //***** condition to play game ******
-        if (newBet == 0) {
+        if (newBet != 0) {
             //for loop will generate player's first two card
             for (int i = 0; i < 2; i++) {
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
