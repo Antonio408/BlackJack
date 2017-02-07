@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -88,6 +89,12 @@ public class MainActivity extends AppCompatActivity
             R.id.imageViewDealer06, R.id.imageViewDealer07, R.id.imageViewDealer08,
             R.id.imageViewDealer09, R.id.imageViewDealer10, R.id.imageViewDealer11};
 
+    //load coin buttons id
+    private int [] buttonId = {R.id.deal_button,R.id.hit_button, R.id.stay_button,
+            R.id.coin5_imageButton};
+    private int [] coinButton ={R.id.coin25_imageButton,R.id.coin50_imageButton,
+            R.id.coin100_imageButton};
+
     // variables to keep track of cards dealt
     private int[] playerCardSuit = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -130,13 +137,16 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        for(int id : buttonId){
+            Button operation = (Button)findViewById(id);
+            operation.setOnClickListener(this);
+        }
+        for(int id : coinButton){
+            ImageButton coinOp =(ImageButton)findViewById(id);
+            coinOp.setOnClickListener(this);
+        }
 
-        Button newDeal = (Button) findViewById(R.id.deal_button);
-        newDeal.setOnClickListener(this);
-        Button hit = (Button) findViewById(R.id.hit_button);
-        hit.setOnClickListener(this);
-        Button stay = (Button) findViewById(R.id.stay_button);
-        stay.setOnClickListener(this);
+
         if (savedInstanceState == null) {
             newGame();
         }
@@ -177,9 +187,26 @@ public class MainActivity extends AppCompatActivity
             deal();
         } else if (view.getId() == R.id.hit_button) {
             hit();
-        } else {
+        } else if (view.getId() == R.id.stay_button) {
             computersTurn();
         }
+        else if (view.getId() == R.id.coin5_imageButton){
+            placeBet(5);
+        }
+        else if (view.getId() == R.id.coin25_imageButton){
+            placeBet(25);
+        }
+        else if (view.getId() == R.id.coin50_imageButton){
+            placeBet(50);
+        }
+        else{
+            placeBet(100);
+
+        }
+    }
+    public void placeBet(int bet){
+        newBet = newBet + bet;
+        bank = bank - newBet;
     }
 
     @Override
@@ -402,7 +429,7 @@ public class MainActivity extends AppCompatActivity
         }*/
             tv =(TextView)findViewById(R.id.dealerTotal_textView);
             tv.setText("Dealer "+dealerTotal);
-            
+
 
                 for (int i = 0; i < dealerCurrent; i++) {
                     setImageView(cardDrawables[dealerCardSuit[i]][dealerCardType[i]], dealerCards[i]);
