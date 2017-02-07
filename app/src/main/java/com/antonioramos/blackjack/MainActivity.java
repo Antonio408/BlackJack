@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity
     //and display card in the correct imageView. Method will also increment currentCard variable.
     public void hit() {
         TextView bet_tv = (TextView) findViewById(R.id.playerTotal_textView);
-        if (checkScore(players_score)) {
+        if (checkScore(playerTotal)) {
             if (playerCurrent <= 7) {
 
 
@@ -244,12 +244,12 @@ public class MainActivity extends AppCompatActivity
                 setImageView(cardDrawables[cardSuite][cardValue], playersCards[playerCurrent]);
 
 
-                players_score = players_score + calculateScore(cardValue, players_score);
+                playerTotal = playerTotal + calculateScore(cardValue, playerTotal);
                 savePlayersHand(cardSuite, cardValue, playerCurrent);
 
-                bet_tv.setText("Total score " + players_score);
+                bet_tv.setText("Total score " + playerTotal);
                 playerCurrent++;
-                if (players_score > 21) {
+                if (playerTotal > 21) {
                     computersTurn();
                 }
 
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity
         TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
 
 
-        players_score = 0;
+        playerTotal = 0;
         newBet = 0;
         //*********************************************************************************************************
         currentCard = 0;
@@ -281,9 +281,9 @@ public class MainActivity extends AppCompatActivity
 
                 setImageView(cardDrawables[cardSuite][cardValue], playersCards[playerCurrent]);
 
-                players_score = players_score + calculateScore(cardValue, players_score);
+                playerTotal = playerTotal + calculateScore(cardValue, playerTotal);
 
-                tv.setText("Total score " + players_score);
+                tv.setText("Total score " + playerTotal);
                 savePlayersHand(cardSuite, cardValue, playerCurrent);
                 playerCurrent++;
 
@@ -297,10 +297,10 @@ public class MainActivity extends AppCompatActivity
             dealerCurrent++;
 
 
-            computers_score = computers_score + calculateScore(cardValue, computers_score);
+            dealerTotal = dealerTotal + calculateScore(cardValue, dealerTotal);
 
-            tv.setText("Total score " + computers_score);
-            if (players_score == 21) {
+            tv.setText("Total score " + dealerTotal);
+            if (playerTotal == 21) {
                 computersTurn();
             }
         }
@@ -369,7 +369,10 @@ public class MainActivity extends AppCompatActivity
 
     // method to update or restore the game table to display current values in variables
     private void redrawTable() {
+
         if(playerCurrent > 0) {
+            TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
+            tv.setText("Player " + playerTotal);
             for (int i = 0; i < playerCurrent; i++) {
                 setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
 
@@ -378,10 +381,10 @@ public class MainActivity extends AppCompatActivity
                 //ImageView displayCard = (ImageView) findViewById(playersCards[i]);
                 // test if a card is assigned
                 //if (playerCardSuit[i] > -1) {
-                    //setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
-                    //  displayCard.setContentDescription(getString(cardStrings[playerCardSuit[1]][playerCardType[i]]));
-                }
+                //setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
+                //  displayCard.setContentDescription(getString(cardStrings[playerCardSuit[1]][playerCardType[i]]));
             }
+
 
 /*
         for (int i = 0; i < dealerCurrent; i++) {
@@ -397,11 +400,14 @@ public class MainActivity extends AppCompatActivity
 
             }
         }*/
-        if(dealerCurrent > 0){
-            for (int i = 0; i < dealerCurrent; i++) {
-                setImageView(cardDrawables[dealerCardSuit[i]][dealerCardType[i]], dealerCards[i]);
-            }
+            if (dealerCurrent > 0) {
+                tv =(TextView)findViewById(R.id.dealerTotal_textView);
+                tv.setText("Dealer "+dealerTotal);
+                for (int i = 0; i < dealerCurrent; i++) {
+                    setImageView(cardDrawables[dealerCardSuit[i]][dealerCardType[i]], dealerCards[i]);
+                }
 
+            }
         }
     }
 
@@ -441,7 +447,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-            while(checkScore(computers_score) && bestHand) {
+            while(checkScore(dealerTotal) && bestHand) {
                 ImageView displayCard = (ImageView) findViewById(dealerCards[dealerCurrent]);
                 cardValue = chooseCard();
                 cardSuite = chooseSuit();
@@ -453,16 +459,16 @@ public class MainActivity extends AppCompatActivity
                 setImageView(cardDrawables[cardSuite][cardValue], dealerCards[dealerCurrent]);
 
 
-                computers_score = computers_score + calculateScore(cardValue, computers_score);
-                tv.setText("Total score " + computers_score);
-                if (computers_score >= 18) {
+                dealerTotal = dealerTotal + calculateScore(cardValue, dealerTotal);
+                tv.setText("Total score " + dealerTotal);
+                if (dealerTotal >= 18) {
                     bestHand = false;
                 }
                 dealerCurrent++;
             }
 
 
-        
+
 
     }
 }
