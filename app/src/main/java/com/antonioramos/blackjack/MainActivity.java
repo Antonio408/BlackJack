@@ -186,9 +186,9 @@ public class MainActivity extends AppCompatActivity
         if(newBet > 0) {
             if (view.getId() == R.id.deal_button) {
                 deal();
-            } else if (view.getId() == R.id.hit_button) {
+            } else if (view.getId() == R.id.hit_button&& playerCurrent > 0 ) {
                 hit();
-            } else if(view.getId() == R.id.stay_button) {
+            } else if(view.getId() == R.id.stay_button && playerCurrent > 0) {
                 computersTurn();
             }
         }
