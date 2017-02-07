@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import org.w3c.dom.Text;
 
 import java.util.Random;
 
@@ -88,6 +90,12 @@ public class MainActivity extends AppCompatActivity
             R.id.imageViewDealer06, R.id.imageViewDealer07, R.id.imageViewDealer08,
             R.id.imageViewDealer09, R.id.imageViewDealer10, R.id.imageViewDealer11};
 
+    //load coin buttons id
+    private int [] buttonId = {R.id.deal_button,R.id.hit_button, R.id.stay_button,};
+
+    private int [] coinButton ={ R.id.coin5_imageButton, R.id.coin25_imageButton,
+            R.id.coin50_imageButton, R.id.coin100_imageButton};
+
     // variables to keep track of cards dealt
     private int[] playerCardSuit = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -130,13 +138,16 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        for(int id : buttonId){
+            Button operation = (Button)findViewById(id);
+            operation.setOnClickListener(this);
+        }
+        for(int id : coinButton){
+            ImageButton coinOp =(ImageButton)findViewById(id);
+            coinOp.setOnClickListener(this);
+        }
 
-        Button newDeal = (Button) findViewById(R.id.deal_button);
-        newDeal.setOnClickListener(this);
-        Button hit = (Button) findViewById(R.id.hit_button);
-        hit.setOnClickListener(this);
-        Button stay = (Button) findViewById(R.id.stay_button);
-        stay.setOnClickListener(this);
+
         if (savedInstanceState == null) {
             newGame();
         }
@@ -172,14 +183,45 @@ public class MainActivity extends AppCompatActivity
     */
     @Override
     public void onClick(View view) {
-
-        if (view.getId() == R.id.deal_button) {
-            deal();
-        } else if (view.getId() == R.id.hit_button) {
-            hit();
-        } else {
-            computersTurn();
+        if(newBet > 0) {
+            if (view.getId() == R.id.deal_button) {
+                deal();
+            } else if (view.getId() == R.id.hit_button&& playerCurrent > 0 ) {
+                hit();
+            } else if(view.getId() == R.id.stay_button && playerCurrent > 0) {
+                computersTurn();
+            }
         }
+        else if (view.getId() == R.id.coin5_imageButton){
+            placeBet(5);
+        }
+        else if (view.getId() == R.id.coin25_imageButton){
+            placeBet(25);
+        }
+        else if (view.getId() == R.id.coin50_imageButton){
+            placeBet(50);
+        }
+        else if(view.getId() == R.id.coin100_imageButton){
+            placeBet(100);
+
+        }
+        else{
+            TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
+            tv.setText("PLACE BET!!!");
+        }
+    }
+    public void placeBet(int bet){
+        if(playerCurrent == 0) {
+            newBet = newBet + bet;
+            bank = bank - bet;
+            upDateMoney(newBet, bank);
+        }
+    }
+    public void upDateMoney(int bet1, int bank1){
+        TextView tv=(TextView) findViewById(R.id.bet_textView);
+        tv.setText(Integer.toString(bet1));
+        tv =(TextView)findViewById(R.id.textView5);
+        tv.setText(Integer.toString(bank1));
     }
 
     @Override
@@ -232,24 +274,24 @@ public class MainActivity extends AppCompatActivity
     //and display card in the correct imageView. Method will also increment currentCard variable.
     public void hit() {
         TextView bet_tv = (TextView) findViewById(R.id.playerTotal_textView);
-        if (checkScore(players_score)) {
-            if (currentCard <= 7) {
-                ImageView displayCard = (ImageView) findViewById(playersCards[currentCard]);
+        if (checkScore(playerTotal)) {
+            if (playerCurrent <= 7) {
+
 
                 cardValue = chooseCard();
                 cardSuite = chooseSuit();
 
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
                 //playersCards[currentCard] selects current imageView
-                setImageView(cardDrawables[cardSuite][cardValue], playersCards[currentCard]);
+                setImageView(cardDrawables[cardSuite][cardValue], playersCards[playerCurrent]);
 
 
-                players_score = players_score + calculateScore(cardValue, players_score);
-                savePlayersHand(cardSuite, cardValue, currentCard);
+                playerTotal = playerTotal + calculateScore(cardValue, playerTotal);
+                savePlayersHand(cardSuite, cardValue, playerCurrent);
 
-                bet_tv.setText("Total score " + players_score);
-                currentCard++;
-                if (players_score > 21) {
+                bet_tv.setText("Total score " + playerTotal);
+                playerCurrent++;
+                if (playerTotal > 21) {
                     computersTurn();
                 }
 
@@ -264,14 +306,6 @@ public class MainActivity extends AppCompatActivity
         TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
 
 
-        players_score = 0;
-        newBet = 0;
-        //*********************************************************************************************************
-        currentCard = 0;
-
-        //**************************************************************************************************
-        //***** condition to play game ******
-        if (newBet == 0) {
             //for loop will generate player's first two card
             for (int i = 0; i < 2; i++) {
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
@@ -279,36 +313,32 @@ public class MainActivity extends AppCompatActivity
                 cardValue = chooseCard();
                 cardSuite = chooseSuit();
 
-                setImageView(cardDrawables[cardSuite][cardValue], playersCards[currentCard]);
+                setImageView(cardDrawables[cardSuite][cardValue], playersCards[playerCurrent]);
 
-                players_score = players_score + calculateScore(cardValue, players_score);
+                playerTotal = playerTotal + calculateScore(cardValue, playerTotal);
 
-                tv.setText("Total score " + players_score);
-                savePlayersHand(cardSuite, cardValue, currentCard);
+                tv.setText("Total score " + playerTotal);
+                savePlayersHand(cardSuite, cardValue, playerCurrent);
                 playerCurrent++;
 
             }
             cardValue = chooseCard();
             cardSuite = chooseSuit();
             tv = (TextView) findViewById(R.id.dealerTotal_textView);
-            setImageView(cardDrawables[cardSuite][cardValue], dealerCards[0]);
+            setImageView(cardDrawables[cardSuite][cardValue], dealerCards[dealerCurrent]);
             saveDealersHand(cardSuite, cardValue, dealerCurrent);
+            setImageView(R.drawable.back1, dealerCards[1]);
             dealerCurrent++;
 
 
-            computers_score = computers_score + calculateScore(cardValue, computers_score);
+            dealerTotal = dealerTotal + calculateScore(cardValue, dealerTotal);
 
-            tv.setText("Total score " + computers_score);
-            if (players_score == 21) {
+            tv.setText("Total score " + dealerTotal);
+            if (playerTotal == 21) {
                 computersTurn();
             }
-        }
-        /*******************************************************
-         * ****** else created for debugging  purposes ************
-         *********************************************************/
-        else {
-            tv.setText("place bet");
-        }
+
+
     }
 
     public void savePlayersHand(int suit, int value, int currentHand) {
@@ -368,16 +398,24 @@ public class MainActivity extends AppCompatActivity
 
     // method to update or restore the game table to display current values in variables
     private void redrawTable() {
-        for (int i = 0; i < playerCurrent; i++) {
-            // get ImageView interface
-            ImageView displayCard = (ImageView) findViewById(playersCards[i]);
-            // test if a card is assigned
-            if (playerCardSuit[i] > -1) {
-                setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
-                displayCard.setContentDescription(getString(cardStrings[playerCardSuit[1]][playerCardType[i]]));
-            }
-        }
 
+        if(playerCurrent > 0) {
+            TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
+            tv.setText("Player " + playerTotal);
+            for (int i = 0; i < playerCurrent; i++) {
+                setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
+
+
+                // get ImageView interface
+                //ImageView displayCard = (ImageView) findViewById(playersCards[i]);
+                // test if a card is assigned
+                //if (playerCardSuit[i] > -1) {
+                //setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
+                //  displayCard.setContentDescription(getString(cardStrings[playerCardSuit[1]][playerCardType[i]]));
+            }
+
+
+/*
         for (int i = 0; i < dealerCurrent; i++) {
             // get ImageView of current card
             ImageView displayCard = (ImageView) findViewById(dealerCards[i]);
@@ -390,7 +428,24 @@ public class MainActivity extends AppCompatActivity
                 displayCard.setContentDescription(getString(cardStrings[dealerCardSuit[1]][dealerCardType[i]]));
 
             }
+        }*/
+            tv =(TextView)findViewById(R.id.dealerTotal_textView);
+            tv.setText("Dealer "+dealerTotal);
+
+
+                for (int i = 0; i < dealerCurrent; i++) {
+                    setImageView(cardDrawables[dealerCardSuit[i]][dealerCardType[i]], dealerCards[i]);
+                }
+            if (dealerCurrent == 1) {
+                setImageView(R.drawable.back1,dealerCards[1]);
+
+            }
+
+
+            checkWinner();
         }
+        upDateMoney(newBet,bank);
+
     }
 
 
@@ -425,32 +480,51 @@ public class MainActivity extends AppCompatActivity
 
     private void computersTurn() {
         TextView tv = (TextView) findViewById(R.id.dealerTotal_textView);
-        currentCard = 1;
 
-
-        while (currentCard < 10) {
-            if (checkScore(computers_score) && bestHand) {
-                ImageView displayCard = (ImageView) findViewById(dealerCards[currentCard]);
+            while(checkScore(dealerTotal) && bestHand) {
+                ImageView displayCard = (ImageView) findViewById(dealerCards[dealerCurrent]);
                 cardValue = chooseCard();
                 cardSuite = chooseSuit();
-                saveDealersHand(cardSuite, cardValue, currentCard);
+                saveDealersHand(cardSuite, cardValue, dealerCurrent);
 
 
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
                 //playersCards[currentCard] selects current imageView
-                setImageView(cardDrawables[chooseSuit()][cardValue], dealerCards[currentCard]);
-                displayCard.setVisibility(View.VISIBLE);
+                setImageView(cardDrawables[cardSuite][cardValue], dealerCards[dealerCurrent]);
 
-                computers_score = computers_score + calculateScore(cardValue, computers_score);
-                tv.setText("Total score " + computers_score);
-                if (computers_score >= 18) {
+
+                dealerTotal = dealerTotal + calculateScore(cardValue, dealerTotal);
+                tv.setText("Total score " + dealerTotal);
+                if (dealerTotal >= 18) {
                     bestHand = false;
                 }
-
+                dealerCurrent++;
             }
-            currentCard++;
 
+        checkWinner();
+
+    }
+    public void checkWinner(){
+        int [] message ={R.drawable.winner,R.drawable.loser,R.drawable.draw};
+
+        if(playerTotal > dealerTotal){
+            bank += newBet *2;
+            winnerMessage(message[0]);
         }
+        else if(playerTotal < dealerTotal){
+            bank -= newBet;
+            winnerMessage(message[1]);
+        }
+        else{
+            winnerMessage(message[2]);
+        }
+    }
+    public void winnerMessage(int winner){
+        ImageView im = (ImageView)findViewById(R.id.message_imageView);
+        im.setVisibility(View.VISIBLE);
+        im =(ImageView)findViewById(R.id.winMessage_imageView);
+        im.setImageResource(winner);
+        im.setVisibility(View.VISIBLE);
 
     }
 }
