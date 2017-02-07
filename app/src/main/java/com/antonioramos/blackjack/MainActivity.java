@@ -183,13 +183,14 @@ public class MainActivity extends AppCompatActivity
     */
     @Override
     public void onClick(View view) {
-
-        if (view.getId() == R.id.deal_button) {
-            deal();
-        } else if (view.getId() == R.id.hit_button) {
-            hit();
-        } else if (view.getId() == R.id.stay_button) {
-            computersTurn();
+        if(newBet > 0) {
+            if (view.getId() == R.id.deal_button) {
+                deal();
+            } else if (view.getId() == R.id.hit_button) {
+                hit();
+            } else if(view.getId() == R.id.stay_button) {
+                computersTurn();
+            }
         }
         else if (view.getId() == R.id.coin5_imageButton){
             placeBet(5);
@@ -200,9 +201,13 @@ public class MainActivity extends AppCompatActivity
         else if (view.getId() == R.id.coin50_imageButton){
             placeBet(50);
         }
-        else{
+        else if(view.getId() == R.id.coin100_imageButton){
             placeBet(100);
 
+        }
+        else{
+            TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
+            tv.setText("PLACE BET!!!");
         }
     }
     public void placeBet(int bet){
@@ -301,13 +306,6 @@ public class MainActivity extends AppCompatActivity
         TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
 
 
-        //playerTotal = 0;
-
-
-
-
-        //***** condition to play game ******
-        if (newBet != 0) {
             //for loop will generate player's first two card
             for (int i = 0; i < 2; i++) {
                 //cardDrawables[chooseSuit()][chooseCard()] selects card and
@@ -339,13 +337,8 @@ public class MainActivity extends AppCompatActivity
             if (playerTotal == 21) {
                 computersTurn();
             }
-        }
-        /*******************************************************
-         * ****** else created for debugging  purposes ************
-         *********************************************************/
-        else {
-            tv.setText("PLACE BET!!!");
-        }
+
+
     }
 
     public void savePlayersHand(int suit, int value, int currentHand) {
