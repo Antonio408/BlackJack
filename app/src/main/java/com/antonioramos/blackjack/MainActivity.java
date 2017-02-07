@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity
          * ****** else created for debugging  purposes ************
          *********************************************************/
         else {
-            tv.setText("place bet");
+            tv.setText("PLACE BET!!!");
         }
     }
 
@@ -449,7 +449,9 @@ public class MainActivity extends AppCompatActivity
             }
 
 
+
         }
+        upDateMoney(newBet,bank);
     }
 
 
@@ -485,9 +487,6 @@ public class MainActivity extends AppCompatActivity
     private void computersTurn() {
         TextView tv = (TextView) findViewById(R.id.dealerTotal_textView);
 
-
-
-
             while(checkScore(dealerTotal) && bestHand) {
                 ImageView displayCard = (ImageView) findViewById(dealerCards[dealerCurrent]);
                 cardValue = chooseCard();
@@ -508,9 +507,22 @@ public class MainActivity extends AppCompatActivity
                 dealerCurrent++;
             }
 
+        checkWinner();
 
-
-
+    }
+    public void checkWinner(){
+        TextView tv =(TextView)findViewById(R.id.textView);
+        if(playerTotal > dealerTotal){
+            bank += newBet *2;
+            tv.setText("Player Wins!!");
+        }
+        else if(playerTotal < dealerTotal){
+            bank -= newBet;
+            tv.setText("Player Loses!!");
+        }
+        else{
+            tv.setText("No winner !!");
+        }
     }
 }
 

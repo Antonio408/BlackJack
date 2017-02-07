@@ -417,7 +417,9 @@
             android:layout_width="match_parent"
             android:layout_height="37dp"
             android:layout_toEndOf="@+id/coin100_imageButton"
-            android:layout_toStartOf="@+id/bank_textView">
+            android:layout_toStartOf="@+id/bank_textView"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true">
 
             <TextView
                 android:text="@string/bet_text"
@@ -427,6 +429,14 @@
                 android:textSize="30sp"
 
                 android:layout_marginStart="37dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:layout_below="@+id/bet_textView"
+                android:layout_alignStart="@+id/bet_textView"
+                android:textSize="25sp" />
 
         </RelativeLayout>
 

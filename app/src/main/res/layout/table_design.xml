@@ -194,15 +194,6 @@
             android:id="@+id/dealerTotal_textView" />
 
         <TextView
-            android:text="@string/bet_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/bet_textView"
-            android:textSize="30sp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
             android:text="@string/playerTotal_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -230,6 +221,25 @@
             android:textSize="25sp"
             android:layout_below="@+id/bank_textView"
             android:layout_alignStart="@+id/bank_textView" />
+
+        <TextView
+            android:text="@string/bet_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bet_textView"
+            android:textSize="30sp"
+            android:layout_alignBaseline="@+id/textView5"
+            android:layout_alignBottom="@+id/textView5"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="48dp" />
+
+        <TextView
+            android:text="Bet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_above="@+id/bet_textView"
+            android:layout_alignStart="@+id/bet_textView" />
 
     </RelativeLayout>
 
