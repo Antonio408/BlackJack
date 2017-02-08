@@ -217,7 +217,7 @@
             android:text="@string/bank_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView5"
+            android:id="@+id/bankAmount_textView"
             android:textSize="25sp"
             android:layout_below="@+id/bank_textView"
             android:layout_alignStart="@+id/bank_textView" />
@@ -228,8 +228,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/bet_textView"
             android:textSize="30sp"
-            android:layout_alignBaseline="@+id/textView5"
-            android:layout_alignBottom="@+id/textView5"
+            android:layout_alignBaseline="@+id/bankAmount_textView"
+            android:layout_alignBottom="@+id/bankAmount_textView"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="48dp" />
 
