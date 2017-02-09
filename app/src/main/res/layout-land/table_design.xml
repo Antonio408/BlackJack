@@ -84,6 +84,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ace"
+            android:id="@+id/firstCard_imageView"
+            android:adjustViewBounds="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@+id/dealer6_imageView"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ace"
             android:id="@+id/dealer2_imageView"
             android:adjustViewBounds="true"
             android:layout_marginStart="15dp"
