@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity
             operation.setOnClickListener(this);
         }
         for(int id : coinButton){
+
             ImageButton coinOp =(ImageButton)findViewById(id);
             coinOp.setOnClickListener(this);
         }
@@ -195,6 +196,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
+
+
         if (view.getId() == R.id.coin5_imageButton){
             placeBet(5);
         }
@@ -209,6 +212,8 @@ public class MainActivity extends AppCompatActivity
 
         }
         else if(newBet > 0) {
+            ImageView im =(ImageView)findViewById(R.id.winMessage_imageView);
+            im.setVisibility(View.INVISIBLE);
             if (view.getId() == R.id.deal_button && playerCurrent == 0) {
                 deal();
             } else if (view.getId() == R.id.hit_button&& playerCurrent > 0 ) {
@@ -220,15 +225,23 @@ public class MainActivity extends AppCompatActivity
         }
 
         else{
+            restGame();
             TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
             tv.setText("PLACE BET!!!");
         }
     }
     public void placeBet(int bet){
-        if(playerCurrent == 0) {
-            newBet = newBet + bet;
-            bank = bank - bet;
-            upDateMoney(newBet, bank);
+        if(playerCurrent == 0 && bank >= 5) {
+
+            if(bank - bet < 0 && newBet ==0){
+                TextView tv = (TextView)findViewById(R.id.playerTotal_textView);
+                tv.setText("Select new game from Menu");
+            }
+            else {
+                newBet = newBet + bet;
+                bank = bank - bet;
+                upDateMoney(newBet, bank);
+            }
         }
     }
     public void upDateMoney(int bet1, int bank1){
@@ -513,29 +526,55 @@ public class MainActivity extends AppCompatActivity
 
     }
     public void checkWinner(){
+
         int [] message ={R.drawable.winner,R.drawable.loser,R.drawable.draw};
         if((playerTotal > dealerTotal && playerTotal <21)||(playerTotal < dealerTotal
                 && dealerTotal > 21)){
 
             bank += newBet *2;
             winnerMessage(message[0]);
-            upDateMoney(newBet,bank);
+
         }
         else if((playerTotal < dealerTotal && dealerTotal <22)||(dealerTotal < playerTotal
                 && playerTotal >21)){
-            bank -= newBet;
+
             winnerMessage(message[1]);
         }
         else{
+            bank+=newBet;
             winnerMessage(message[2]);
         }
+        newBet =0;
+        upDateMoney(newBet, bank);
     }
+
     public void winnerMessage(int winner){
         ImageView im = (ImageView)findViewById(R.id.message_imageView);
         im.setVisibility(View.VISIBLE);
         im =(ImageView)findViewById(R.id.winMessage_imageView);
         im.setImageResource(winner);
         im.setVisibility(View.VISIBLE);
+
+    }
+
+    private void restGame() {
+        for (int i = 0; i < 11; i++) {
+            ImageView iv = (ImageView) findViewById(playersCards[i]);
+            iv.setVisibility(View.INVISIBLE);
+            iv = (ImageView) findViewById(dealerCards[i]);
+            iv.setVisibility(View.INVISIBLE);
+            playerCardSuit[i] = -1;
+            dealerCardSuit[i] = -1;
+            playerCardType[i] = -1;
+            dealerCardType[i] = -1;
+        }
+        dealerHoldCardShown = false;
+        newBet = 0;
+        playerCurrent = 0;
+        dealerCurrent = 0;
+        playerTotal = 0;
+        dealerTotal = 0;
+        noWinner = true;
 
     }
 
