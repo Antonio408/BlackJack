@@ -69,4 +69,6 @@
     <string name="click_coins_text">Click Coins to Place Bet</string>
     <string name="face_down_playing_card">Face down playing card</string>
     <string name="title_activity_about">AboutActivity</string>
+    <string name="place_bet">PLACE BET!!!</string>
+    <string name="select_new_game">Select new game from Menu</string>
 </resources>

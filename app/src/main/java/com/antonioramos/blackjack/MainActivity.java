@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity
                     R.drawable.clubs_eight, R.drawable.clubs_nine, R.drawable.clubs_ten,
                     R.drawable.clubs_jack, R.drawable.clubs_queen, R.drawable.clubs_king}};
 
-    // Variable to hold content description ids for accessibilty
+    // Variable to hold content description ids for accessibilty added by Gary
     private int[][] cardStrings = {{R.string.ace_of_hearts, R.string.two_of_hearts,
             R.string.three_of_hearts, R.string.four_of_hearts, R.string.five_of_hearts,
             R.string.six_of_hearts, R.string.seven_of_hearts, R.string.eight_of_hearts,
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity
                     R.string.ten_of_clubs, R.string.jack_of_clubs, R.string.queen_of_clubs,
                     R.string.king_of_clubs}};
 
-    // Variables to save and restore state
+    // Variables to save and restore state added by Gary
     private static final String PLAYER_CARD_SUIT = "playerCardSuit";
     private static final String DEALER_CARD_SUIT = "dealerCardSuit";
     private static final String PLAYER_CARD_TYPE = "playerCardType";
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity
             R.id.player4_imageView, R.id.player5_imageView, R.id.player6_imageView, R.id.player7_imageView,
             R.id.player8_imageView, R.id.player9_imageView, R.id.player10_imageView, R.id.player11_imageView};
 
-    //load dealer's imageView id into dealerCards array
+    //load dealer's imageView id into dealerCards array added by Gary
     private int[] dealerCards = {R.id.dealer1_imageView, R.id.dealer2_imageView, R.id.firstCard_imageView,
             R.id.delaer3_imageView, R.id.dealer4_imageView, R.id.dealer5_imageView,
             R.id.dealer6_imageView, R.id.dealer7_imageView, R.id.dealer8_imageView,
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity
     private int [] coinButton ={ R.id.coin5_imageButton, R.id.coin25_imageButton,
             R.id.coin50_imageButton, R.id.coin100_imageButton};
 
-    // variables to keep track of cards dealt
+    // variables to keep track of cards dealt added by Gary
     private int[] playerCardSuit = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     private int[] dealerCardSuit = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -114,11 +115,13 @@ public class MainActivity extends AppCompatActivity
 
     private int[] dealerCardType = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+    // variable to determine hold card is shown added by Gary
     private boolean dealerHoldCardShown = false;
 
     //variable will keep track of number of card been dealt
     private int newBet = 0;
 
+    // variables for bank and hand totals added by Gary
     private int bank = 1000;
     private int playerTotal;
     private int dealerTotal;
@@ -156,10 +159,10 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-
+        // test if instance was not restored initialize game and check for saved game added by Gary
         if (savedInstanceState == null) {
             newGame();
-            Log.i("INFO", "---------- READ CALLED");
+            // Log.i("INFO", "---------- READ CALLED");
             readData();
             redrawTable();
         }
@@ -167,6 +170,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    // prepare menu added by Gary
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -175,7 +179,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
+        // options clicked method added by Gary
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             // Handle action bar item clicks here. The action bar will
@@ -227,7 +231,7 @@ public class MainActivity extends AppCompatActivity
         else{
             restGame();
             TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
-            tv.setText("PLACE BET!!!");
+            tv.setText(R.string.place_bet);
         }
     }
     public void placeBet(int bet){
@@ -235,7 +239,7 @@ public class MainActivity extends AppCompatActivity
 
             if(bank - bet < 0 && newBet ==0){
                 TextView tv = (TextView)findViewById(R.id.playerTotal_textView);
-                tv.setText("Select new game from Menu");
+                tv.setText(R.string.select_new_game);
             }
             else {
                 newBet = newBet + bet;
@@ -246,11 +250,12 @@ public class MainActivity extends AppCompatActivity
     }
     public void upDateMoney(int bet1, int bank1){
         TextView tv=(TextView) findViewById(R.id.bet_textView);
-        tv.setText(Integer.toString(bet1));
+        tv.setText(String.format(Locale.getDefault(), "%d", bet1));
         tv =(TextView)findViewById(R.id.bankAmount_textView);
-        tv.setText(Integer.toString(bank1));
+        tv.setText(String.format(Locale.getDefault(), "%d", bank1));
     }
 
+    // Save instance variables added by Gary
     @Override
     protected void onSaveInstanceState(Bundle outState) {
 
@@ -270,6 +275,7 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
     }
 
+    // retrieve instance variables added by Gary
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -288,7 +294,7 @@ public class MainActivity extends AppCompatActivity
             playerTotal = savedInstanceState.getInt(PLAYER_TOTAL);
             dealerTotal = savedInstanceState.getInt(DEALER_TOTAL);
 
-        /* process variables to proper state of the game */
+            // process variables to proper state of the game added by Gary
             redrawTable();
         }
     }
@@ -314,7 +320,7 @@ public class MainActivity extends AppCompatActivity
                 playerTotal = playerTotal + calculateScore(cardValue, playerTotal);
                 savePlayersHand(cardSuit, cardValue, playerCurrent);
 
-                bet_tv.setText("Total score " + playerTotal);
+                bet_tv.setText(String.format(Locale.getDefault(), "Total score %d", playerTotal));
                 playerCurrent++;
                 if (playerTotal > 21) {
                     computersTurn();
@@ -340,7 +346,7 @@ public class MainActivity extends AppCompatActivity
 
                 playerTotal += calculateScore(cardValue, playerTotal);
 
-                tv.setText("Total score " + Integer.toString(playerTotal));
+                tv.setText(String.format(Locale.getDefault(), "Total score %d", playerTotal));
                 savePlayersHand(cardSuit, cardValue, playerCurrent);
                 playerCurrent++;
 
@@ -357,7 +363,7 @@ public class MainActivity extends AppCompatActivity
 
             dealerTotal += calculateScore(cardValue, dealerTotal);
 
-            tv.setText("Total score " + Integer.toString(dealerTotal));
+            tv.setText(String.format(Locale.getDefault(), "Total score %d", dealerTotal));
             if (playerTotal == 21) {
                 computersTurn();
             }
@@ -387,17 +393,17 @@ public class MainActivity extends AppCompatActivity
     //method will generate and return a number between 0 and 3
     //0 = hearts, 1 = diamonds, 2 = spades, 3 = clubs
     public int chooseSuit() {
-        return r.nextInt(4 - 0) + 0;
+        return r.nextInt(4);
     }
 
     //method will generate and return a number between 0 and 12
     //card value is
     // 0=ace, 1=2, 2=3, 3=4, 4=5, 5=6, 7=8, 8=9, 9=10, 10=jack, 11=queen, 12=king
     public int chooseCard() {
-        return r.nextInt(13 - 0) + 0;
+        return r.nextInt(13);
     }
 
-    // Method to reset all variables for a new game
+    // Method to reset all variables for a new game added by Gary
     private void newGame() {
         for (int i = 0; i < 11; i++) {
             ImageView iv = (ImageView) findViewById(playersCards[i]);
@@ -420,6 +426,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     // method to update or restore the game table to display current values in variables
+    // added by Gary
     private void redrawTable() {
 
         if(playerCurrent > 0) {
@@ -454,13 +461,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
-        tv.setText("Player " + Integer.toString(playerTotal));
+        tv.setText(String.format(Locale.getDefault(), "Player %d", playerTotal));
         tv = (TextView) findViewById(R.id.dealerTotal_textView);
-        tv.setText("Dealer " + Integer.toString(dealerTotal));
+        tv.setText(String.format(Locale.getDefault(), "Dealer %d", dealerTotal));
         tv = (TextView) findViewById(R.id.bankAmount_textView);
-        tv.setText(Integer.toString(bank));
+        tv.setText(String.format(Locale.getDefault(), "%d", bank));
         tv = (TextView) findViewById(R.id.bet_textView);
-        tv.setText(Integer.toString(newBet));
+        tv.setText(String.format(Locale.getDefault(), "%d", newBet));
 
     }
 
@@ -488,9 +495,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private boolean checkScore(int score) {
-        if (score >= 21) {
-            return false;
-        } else return true;
+        return score < 21;
     }
 
 
@@ -515,7 +520,7 @@ public class MainActivity extends AppCompatActivity
 
 
             dealerTotal = dealerTotal + calculateScore(cardValue, dealerTotal);
-            tv.setText("Total score " + dealerTotal);
+            tv.setText(String.format(Locale.getDefault(), "Total score %d", dealerTotal));
             if (dealerTotal >= 18) {
                 bestHand = false;
             }
@@ -578,23 +583,25 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    // call method to save game state to file added by Gary
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i("INFO", "---------- Write CALLED");
+        // Log.i("INFO", "---------- Write CALLED");
         writeData();
     }
 
+    // read game state from file added by Gary
     private void readData() {
 
         try {
-            Log.i("INFO", "---------- Entered Read");
+            // Log.i("INFO", "---------- Entered Read");
             FileInputStream fis = openFileInput(DATA_FILENAME);
             Scanner scanner = new Scanner(fis);
 
-            Log.i("INFO", "---------- Read Setup Done");
+            // Log.i("INFO", "---------- Read Setup Done");
             if (scanner.hasNext()) {
-                Log.i("INFO", "---------- Read has DATA");
+                // Log.i("INFO", "---------- Read has DATA");
                 int i;
 
                 for (i = 0; i < 11; i++)
@@ -615,21 +622,22 @@ public class MainActivity extends AppCompatActivity
             }
             scanner.close();
         } catch (FileNotFoundException e) {
-            Log.i("INFO", "---------- Read Exception");
+            // Log.i("INFO", "---------- Read Exception");
             // ok if file does not exist
         }
     }
 
+    // write game state to file added by Gary
     private void writeData() {
 
         try {
-            Log.i("INFO", "---------- Entered Write");
+            // Log.i("INFO", "---------- Entered Write");
             FileOutputStream fos = openFileOutput(DATA_FILENAME, Context.MODE_PRIVATE);
             OutputStreamWriter osw = new OutputStreamWriter(fos);
             BufferedWriter bw = new BufferedWriter(osw);
             PrintWriter pw = new PrintWriter(bw);
             int i;
-            Log.i("INFO", "---------- Write Setup Complete");
+            // Log.i("INFO", "---------- Write Setup Complete");
 
             for (i = 0; i < 11; i++)
                 pw.println(playerCardSuit[i]);
@@ -646,12 +654,12 @@ public class MainActivity extends AppCompatActivity
             pw.println(dealerTotal);
             pw.println(playerCurrent);
             pw.println(dealerCurrent);
-            Log.i("INFO", "---------- Write DATA COMPLETE");
+            // Log.i("INFO", "---------- Write DATA COMPLETE");
 
 
             pw.close();
         } catch (FileNotFoundException e) {
-            Log.e("WRITE_ERR", "Cannot save data: " + e.getMessage());
+            // Log.e("WRITE_ERR", "Cannot save data: " + e.getMessage());
             e.printStackTrace();
             Toast.makeText(this, "Error saving data", Toast.LENGTH_SHORT).show();
         }
