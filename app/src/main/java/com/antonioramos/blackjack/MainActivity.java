@@ -213,6 +213,7 @@ public class MainActivity extends AppCompatActivity
             } else if (view.getId() == R.id.hit_button&& playerCurrent > 0 ) {
                 hit();
             } else if(view.getId() == R.id.stay_button && playerCurrent > 0) {
+
                 computersTurn();
             }
         }
@@ -480,24 +481,29 @@ public class MainActivity extends AppCompatActivity
     private void computersTurn() {
         TextView tv = (TextView) findViewById(R.id.dealerTotal_textView);
 
-            while(checkScore(dealerTotal) && bestHand) {
-                ImageView displayCard = (ImageView) findViewById(dealerCards[dealerCurrent]);
-                cardValue = chooseCard();
-                cardSuit = chooseSuit();
-                saveDealersHand(cardSuit, cardValue, dealerCurrent);
+        //reset bestHand flag when starting new game
+        if(dealerCurrent <3){
+            bestHand = true;
+        }
+
+        while(checkScore(dealerTotal) && bestHand) {
+            ImageView displayCard = (ImageView) findViewById(dealerCards[dealerCurrent]);
+            cardValue = chooseCard();
+            cardSuit = chooseSuit();
+            saveDealersHand(cardSuit, cardValue, dealerCurrent);
 
 
 
-                setImageView(cardDrawables[cardSuit][cardValue], dealerCards[dealerCurrent]);
+            setImageView(cardDrawables[cardSuit][cardValue], dealerCards[dealerCurrent]);
 
 
-                dealerTotal = dealerTotal + calculateScore(cardValue, dealerTotal);
-                tv.setText("Total score " + dealerTotal);
-                if (dealerTotal >= 18) {
-                    bestHand = false;
-                }
-                dealerCurrent++;
+            dealerTotal = dealerTotal + calculateScore(cardValue, dealerTotal);
+            tv.setText("Total score " + dealerTotal);
+            if (dealerTotal >= 18) {
+                bestHand = false;
             }
+            dealerCurrent++;
+        }
 
         checkWinner();
 
