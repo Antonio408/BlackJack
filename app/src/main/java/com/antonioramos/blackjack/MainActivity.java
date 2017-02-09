@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity
             R.id.player8_imageView, R.id.player9_imageView, R.id.player10_imageView, R.id.player11_imageView};
 
     //load dealer's imageView id into dealerCards array
-    private int[] dealerCards = {R.id.dealer1_imageView, R.id.dealer2_imageView,
+    private int[] dealerCards = {R.id.dealer1_imageView, R.id.dealer2_imageView, R.id.firstCard_imageView,
             R.id.delaer3_imageView, R.id.dealer4_imageView, R.id.dealer5_imageView,
             R.id.dealer6_imageView, R.id.dealer7_imageView, R.id.dealer8_imageView,
             R.id.dealer9_imageView, R.id.dealer10_imageView, R.id.dealer11_imageView};
@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity
     Random r = new Random();
 
     boolean bestHand = true;
+    boolean noWinner = true;
 
     int cardValue;
 
@@ -285,7 +286,8 @@ public class MainActivity extends AppCompatActivity
     // dealereCurrent variable.
     public void hit() {
         TextView bet_tv = (TextView) findViewById(R.id.playerTotal_textView);
-        if (checkScore(playerTotal)) {
+
+        if (checkScore(playerTotal)&& noWinner) {
             if (playerCurrent <= 7) {
 
 
@@ -328,6 +330,7 @@ public class MainActivity extends AppCompatActivity
                 tv.setText("Total score " + Integer.toString(playerTotal));
                 savePlayersHand(cardSuit, cardValue, playerCurrent);
                 playerCurrent++;
+
 
             }
             cardValue = chooseCard();
@@ -480,9 +483,10 @@ public class MainActivity extends AppCompatActivity
 
     private void computersTurn() {
         TextView tv = (TextView) findViewById(R.id.dealerTotal_textView);
+        noWinner = false;
 
         //reset bestHand flag when starting new game
-        if(dealerCurrent <3){
+        if(dealerCurrent <4){
             bestHand = true;
         }
 
