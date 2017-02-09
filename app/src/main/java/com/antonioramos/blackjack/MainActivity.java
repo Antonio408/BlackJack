@@ -504,12 +504,15 @@ public class MainActivity extends AppCompatActivity
     }
     public void checkWinner(){
         int [] message ={R.drawable.winner,R.drawable.loser,R.drawable.draw};
+        if((playerTotal > dealerTotal && playerTotal <21)||(playerTotal < dealerTotal
+                && dealerTotal > 21)){
 
-        if(playerTotal > dealerTotal){
             bank += newBet *2;
             winnerMessage(message[0]);
+            upDateMoney(newBet,bank);
         }
-        else if(playerTotal < dealerTotal){
+        else if((playerTotal < dealerTotal && dealerTotal <22)||(dealerTotal < playerTotal
+                && playerTotal >21)){
             bank -= newBet;
             winnerMessage(message[1]);
         }
