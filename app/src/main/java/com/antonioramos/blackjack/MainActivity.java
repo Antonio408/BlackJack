@@ -130,8 +130,7 @@ public class MainActivity extends AppCompatActivity
 
     //Declare and assign Random object to variable r
     Random r = new Random();
-    int players_score = 0;
-    int computers_score = 0;
+
     boolean bestHand = true;
 
     int cardValue;
