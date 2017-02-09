@@ -194,16 +194,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
-        if(newBet > 0) {
-            if (view.getId() == R.id.deal_button) {
-                deal();
-            } else if (view.getId() == R.id.hit_button&& playerCurrent > 0 ) {
-                hit();
-            } else if(view.getId() == R.id.stay_button && playerCurrent > 0) {
-                computersTurn();
-            }
-        }
-        else if (view.getId() == R.id.coin5_imageButton){
+        if (view.getId() == R.id.coin5_imageButton){
             placeBet(5);
         }
         else if (view.getId() == R.id.coin25_imageButton){
@@ -216,6 +207,16 @@ public class MainActivity extends AppCompatActivity
             placeBet(100);
 
         }
+        else if(newBet > 0) {
+            if (view.getId() == R.id.deal_button && playerCurrent == 0) {
+                deal();
+            } else if (view.getId() == R.id.hit_button&& playerCurrent > 0 ) {
+                hit();
+            } else if(view.getId() == R.id.stay_button && playerCurrent > 0) {
+                computersTurn();
+            }
+        }
+
         else{
             TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
             tv.setText("PLACE BET!!!");
