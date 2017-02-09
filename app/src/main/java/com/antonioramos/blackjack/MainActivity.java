@@ -1,21 +1,28 @@
 package com.antonioramos.blackjack;
 
-import android.net.Uri;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
-import org.w3c.dom.Text;
-
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.Random;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -78,6 +85,8 @@ public class MainActivity extends AppCompatActivity
     private static final String DEALER_CURRENT = "dealerCurrent";
     private static final String PLAYER_TOTAL = "playerTotal";
     private static final String DEALER_TOTAL = "dealerTotal";
+    public static final String DATA_FILENAME = "blackjack.txt";
+
 
     //load player's imageView id into playersCards array
     private int[] playersCards = {R.id.player1_imageView, R.id.player2_imageView, R.id.player3_imageView,
@@ -85,10 +94,10 @@ public class MainActivity extends AppCompatActivity
             R.id.player8_imageView, R.id.player9_imageView, R.id.player10_imageView, R.id.player11_imageView};
 
     //load dealer's imageView id into dealerCards array
-    private int[] dealerCards = {R.id.imageViewDealer01, R.id.imageViewDealer02,
-            R.id.imageViewDealer03, R.id.imageViewDealer04, R.id.imageViewDealer05,
-            R.id.imageViewDealer06, R.id.imageViewDealer07, R.id.imageViewDealer08,
-            R.id.imageViewDealer09, R.id.imageViewDealer10, R.id.imageViewDealer11};
+    private int[] dealerCards = {R.id.dealer1_imageView, R.id.dealer2_imageView,
+            R.id.delaer3_imageView, R.id.dealer4_imageView, R.id.dealer5_imageView,
+            R.id.dealer6_imageView, R.id.dealer7_imageView, R.id.dealer8_imageView,
+            R.id.dealer9_imageView, R.id.dealer10_imageView, R.id.dealer11_imageView};
 
     //load coin buttons id
     private int [] buttonId = {R.id.deal_button,R.id.hit_button, R.id.stay_button,};
@@ -108,8 +117,6 @@ public class MainActivity extends AppCompatActivity
     private boolean dealerHoldCardShown = false;
 
     //variable will keep track of number of card been dealt
-    private int currentCard = 0;
-
     private int newBet = 0;
 
     private int bank = 1000;
@@ -119,7 +126,7 @@ public class MainActivity extends AppCompatActivity
     private int playerCurrent = 0;
     private int dealerCurrent = 0;
 
-    private int cardSuite;
+    private int cardSuit;
 
     //Declare and assign Random object to variable r
     Random r = new Random();
@@ -148,8 +155,12 @@ public class MainActivity extends AppCompatActivity
         }
 
 
+
         if (savedInstanceState == null) {
             newGame();
+            Log.i("INFO", "---------- READ CALLED");
+            readData();
+            redrawTable();
         }
 
 
@@ -163,7 +174,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    /*
+
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             // Handle action bar item clicks here. The action bar will
@@ -176,11 +187,12 @@ public class MainActivity extends AppCompatActivity
                 return true;
             } else if (id == R.id.action_new_game) {
                 newGame();
+                redrawTable();
             }
 
             return super.onOptionsItemSelected(item);
         }
-    */
+
     @Override
     public void onClick(View view) {
         if(newBet > 0) {
@@ -220,7 +232,7 @@ public class MainActivity extends AppCompatActivity
     public void upDateMoney(int bet1, int bank1){
         TextView tv=(TextView) findViewById(R.id.bet_textView);
         tv.setText(Integer.toString(bet1));
-        tv =(TextView)findViewById(R.id.textView5);
+        tv =(TextView)findViewById(R.id.bankAmount_textView);
         tv.setText(Integer.toString(bank1));
     }
 
@@ -239,7 +251,6 @@ public class MainActivity extends AppCompatActivity
         outState.putInt(DEALER_CURRENT, dealerCurrent);
         outState.putInt(PLAYER_TOTAL, playerTotal);
         outState.putInt(DEALER_TOTAL, dealerTotal);
-
 
         super.onSaveInstanceState(outState);
     }
@@ -264,14 +275,13 @@ public class MainActivity extends AppCompatActivity
 
         /* process variables to proper state of the game */
             redrawTable();
-        } else {
-            newGame();
         }
     }
 
 
     //Method will call chooseSuit() and chooseCard() to generate player's dealt card
-    //and display card in the correct imageView. Method will also increment currentCard variable.
+    //and display card in the correct imageView. Method will also increment playerCurrent or
+    // dealereCurrent variable.
     public void hit() {
         TextView bet_tv = (TextView) findViewById(R.id.playerTotal_textView);
         if (checkScore(playerTotal)) {
@@ -279,15 +289,14 @@ public class MainActivity extends AppCompatActivity
 
 
                 cardValue = chooseCard();
-                cardSuite = chooseSuit();
+                cardSuit = chooseSuit();
 
-                //cardDrawables[chooseSuit()][chooseCard()] selects card and
-                //playersCards[currentCard] selects current imageView
-                setImageView(cardDrawables[cardSuite][cardValue], playersCards[playerCurrent]);
+
+                setImageView(cardDrawables[cardSuit][cardValue], playersCards[playerCurrent]);
 
 
                 playerTotal = playerTotal + calculateScore(cardValue, playerTotal);
-                savePlayersHand(cardSuite, cardValue, playerCurrent);
+                savePlayersHand(cardSuit, cardValue, playerCurrent);
 
                 bet_tv.setText("Total score " + playerTotal);
                 playerCurrent++;
@@ -308,32 +317,30 @@ public class MainActivity extends AppCompatActivity
 
             //for loop will generate player's first two card
             for (int i = 0; i < 2; i++) {
-                //cardDrawables[chooseSuit()][chooseCard()] selects card and
-                //playersCards[currentCard] selects current imageView
                 cardValue = chooseCard();
-                cardSuite = chooseSuit();
+                cardSuit = chooseSuit();
 
-                setImageView(cardDrawables[cardSuite][cardValue], playersCards[playerCurrent]);
+                setImageView(cardDrawables[cardSuit][cardValue], playersCards[playerCurrent]);
 
-                playerTotal = playerTotal + calculateScore(cardValue, playerTotal);
+                playerTotal += calculateScore(cardValue, playerTotal);
 
-                tv.setText("Total score " + playerTotal);
-                savePlayersHand(cardSuite, cardValue, playerCurrent);
+                tv.setText("Total score " + Integer.toString(playerTotal));
+                savePlayersHand(cardSuit, cardValue, playerCurrent);
                 playerCurrent++;
 
             }
             cardValue = chooseCard();
-            cardSuite = chooseSuit();
+            cardSuit = chooseSuit();
             tv = (TextView) findViewById(R.id.dealerTotal_textView);
-            setImageView(cardDrawables[cardSuite][cardValue], dealerCards[dealerCurrent]);
-            saveDealersHand(cardSuite, cardValue, dealerCurrent);
-            setImageView(R.drawable.back1, dealerCards[1]);
+            setImageView(R.drawable.back1, dealerCards[0]);
+            dealerCurrent++;
+            setImageView(cardDrawables[cardSuit][cardValue], dealerCards[dealerCurrent]);
+            saveDealersHand(cardSuit, cardValue, dealerCurrent);
             dealerCurrent++;
 
+            dealerTotal += calculateScore(cardValue, dealerTotal);
 
-            dealerTotal = dealerTotal + calculateScore(cardValue, dealerTotal);
-
-            tv.setText("Total score " + dealerTotal);
+            tv.setText("Total score " + Integer.toString(dealerTotal));
             if (playerTotal == 21) {
                 computersTurn();
             }
@@ -380,19 +387,18 @@ public class MainActivity extends AppCompatActivity
             iv.setVisibility(View.INVISIBLE);
             iv = (ImageView) findViewById(dealerCards[i]);
             iv.setVisibility(View.INVISIBLE);
-            playerCardSuit[i] = 0;
-            dealerCardSuit[i] = 0;
-            playerCardType[i] = 0;
-            dealerCardType[i] = 0;
-            dealerHoldCardShown = false;
-            currentCard = 0;
-            newBet = 0;
-            bank = 1000;
-            playerCurrent = 0;
-            dealerCurrent = 0;
-            playerTotal = 0;
-            dealerTotal = 0;
+            playerCardSuit[i] = -1;
+            dealerCardSuit[i] = -1;
+            playerCardType[i] = -1;
+            dealerCardType[i] = -1;
         }
+        dealerHoldCardShown = false;
+        newBet = 0;
+        bank = 1000;
+        playerCurrent = 0;
+        dealerCurrent = 0;
+        playerTotal = 0;
+        dealerTotal = 0;
         redrawTable();
     }
 
@@ -400,51 +406,44 @@ public class MainActivity extends AppCompatActivity
     private void redrawTable() {
 
         if(playerCurrent > 0) {
-            TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
-            tv.setText("Player " + playerTotal);
             for (int i = 0; i < playerCurrent; i++) {
-                setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
-
 
                 // get ImageView interface
-                //ImageView displayCard = (ImageView) findViewById(playersCards[i]);
+                ImageView displayCard = (ImageView) findViewById(playersCards[i]);
                 // test if a card is assigned
-                //if (playerCardSuit[i] > -1) {
-                //setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
-                //  displayCard.setContentDescription(getString(cardStrings[playerCardSuit[1]][playerCardType[i]]));
-            }
-
-
-/*
-        for (int i = 0; i < dealerCurrent; i++) {
-            // get ImageView of current card
-            ImageView displayCard = (ImageView) findViewById(dealerCards[i]);
-
-            if ((i == 0 && dealerHoldCardShown)) {
-                displayCard.setImageDrawable(getDrawable(R.drawable.back1));
-            } else {
-                // show proper card
-                setImageView(cardDrawables[dealerCardSuit[i]][dealerCardType[i]], dealerCards[i]);
-                displayCard.setContentDescription(getString(cardStrings[dealerCardSuit[1]][dealerCardType[i]]));
-
-            }
-        }*/
-            tv =(TextView)findViewById(R.id.dealerTotal_textView);
-            tv.setText("Dealer "+dealerTotal);
-
-
-                for (int i = 0; i < dealerCurrent; i++) {
-                    setImageView(cardDrawables[dealerCardSuit[i]][dealerCardType[i]], dealerCards[i]);
+                if (playerCardSuit[i] > -1 && playerCardType[i] > -1) {
+                    setImageView(cardDrawables[playerCardSuit[i]][playerCardType[i]], playersCards[i]);
+                    displayCard.setContentDescription(getString(cardStrings[playerCardSuit[1]][playerCardType[i]]));
                 }
-            if (dealerCurrent == 1) {
-                setImageView(R.drawable.back1,dealerCards[1]);
-
             }
-
-
-            checkWinner();
         }
-        upDateMoney(newBet,bank);
+
+        if (dealerCurrent > 0) {
+            for (int i = 0; i < dealerCurrent; i++) {
+                // get ImageView of current card
+                ImageView displayCard = (ImageView) findViewById(dealerCards[i]);
+
+                if ((i == 0 && !dealerHoldCardShown)) {
+                    setImageView(R.drawable.back1, dealerCards[i]);
+                } else {
+                    if (dealerCardSuit[i] > -1 && dealerCardType[i] > -1) {
+                        // show proper card
+                        setImageView(cardDrawables[dealerCardSuit[i]][dealerCardType[i]], dealerCards[i]);
+                        displayCard.setContentDescription(getString(cardStrings[dealerCardSuit[1]][dealerCardType[i]]));
+                    }
+
+                }
+            }
+        }
+
+        TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
+        tv.setText("Player " + Integer.toString(playerTotal));
+        tv = (TextView) findViewById(R.id.dealerTotal_textView);
+        tv.setText("Dealer " + Integer.toString(dealerTotal));
+        tv = (TextView) findViewById(R.id.bankAmount_textView);
+        tv.setText(Integer.toString(bank));
+        tv = (TextView) findViewById(R.id.bet_textView);
+        tv.setText(Integer.toString(newBet));
 
     }
 
@@ -484,13 +483,12 @@ public class MainActivity extends AppCompatActivity
             while(checkScore(dealerTotal) && bestHand) {
                 ImageView displayCard = (ImageView) findViewById(dealerCards[dealerCurrent]);
                 cardValue = chooseCard();
-                cardSuite = chooseSuit();
-                saveDealersHand(cardSuite, cardValue, dealerCurrent);
+                cardSuit = chooseSuit();
+                saveDealersHand(cardSuit, cardValue, dealerCurrent);
 
 
-                //cardDrawables[chooseSuit()][chooseCard()] selects card and
-                //playersCards[currentCard] selects current imageView
-                setImageView(cardDrawables[cardSuite][cardValue], dealerCards[dealerCurrent]);
+
+                setImageView(cardDrawables[cardSuit][cardValue], dealerCards[dealerCurrent]);
 
 
                 dealerTotal = dealerTotal + calculateScore(cardValue, dealerTotal);
@@ -526,6 +524,85 @@ public class MainActivity extends AppCompatActivity
         im.setImageResource(winner);
         im.setVisibility(View.VISIBLE);
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("INFO", "---------- Write CALLED");
+        writeData();
+    }
+
+    private void readData() {
+
+        try {
+            Log.i("INFO", "---------- Entered Read");
+            FileInputStream fis = openFileInput(DATA_FILENAME);
+            Scanner scanner = new Scanner(fis);
+
+            Log.i("INFO", "---------- Read Setup Done");
+            if (scanner.hasNext()) {
+                Log.i("INFO", "---------- Read has DATA");
+                int i;
+
+                for (i = 0; i < 11; i++)
+                    playerCardSuit[i] = scanner.nextInt();
+                for (i = 0; i < 11; i++)
+                    dealerCardSuit[i] = scanner.nextInt();
+                for (i = 0; i < 11; i++)
+                    playerCardType[i] = scanner.nextInt();
+                for (i = 0; i < 11; i++)
+                    dealerCardType[i] = scanner.nextInt();
+                dealerHoldCardShown = scanner.nextBoolean();
+                newBet = scanner.nextInt();
+                bank = scanner.nextInt();
+                playerTotal = scanner.nextInt();
+                dealerTotal = scanner.nextInt();
+                playerCurrent = scanner.nextInt();
+                dealerCurrent = scanner.nextInt();
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            Log.i("INFO", "---------- Read Exception");
+            // ok if file does not exist
+        }
+    }
+
+    private void writeData() {
+
+        try {
+            Log.i("INFO", "---------- Entered Write");
+            FileOutputStream fos = openFileOutput(DATA_FILENAME, Context.MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            BufferedWriter bw = new BufferedWriter(osw);
+            PrintWriter pw = new PrintWriter(bw);
+            int i;
+            Log.i("INFO", "---------- Write Setup Complete");
+
+            for (i = 0; i < 11; i++)
+                pw.println(playerCardSuit[i]);
+            for (i = 0; i < 11; i++)
+                pw.println(dealerCardSuit[i]);
+            for (i = 0; i < 11; i++)
+                pw.println(playerCardType[i]);
+            for (i = 0; i < 11; i++)
+                pw.println(dealerCardType[i]);
+            pw.println(dealerHoldCardShown);
+            pw.println(newBet);
+            pw.println(bank);
+            pw.println(playerTotal);
+            pw.println(dealerTotal);
+            pw.println(playerCurrent);
+            pw.println(dealerCurrent);
+            Log.i("INFO", "---------- Write DATA COMPLETE");
+
+
+            pw.close();
+        } catch (FileNotFoundException e) {
+            Log.e("WRITE_ERR", "Cannot save data: " + e.getMessage());
+            e.printStackTrace();
+            Toast.makeText(this, "Error saving data", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 

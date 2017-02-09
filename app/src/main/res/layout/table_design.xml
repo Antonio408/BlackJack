@@ -52,7 +52,7 @@
 
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:id="@+id/imageViewDealer01"
+            android:id="@+id/dealer1_imageView"
             android:contentDescription="@string/face_down_playing_card"
             android:adjustViewBounds="true"
             android:visibility="invisible"/>
@@ -61,11 +61,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ace"
-            android:id="@+id/imageViewDealer02"
+            android:id="@+id/dealer2_imageView"
             android:adjustViewBounds="true"
             android:layout_marginStart="15dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/imageViewDealer01"
+            android:layout_alignStart="@+id/dealer1_imageView"
             android:contentDescription="@string/ace_of_spades"
             android:visibility="invisible" />
 
@@ -73,11 +73,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ace"
-            android:id="@+id/imageViewDealer03"
+            android:id="@+id/delaer3_imageView"
             android:adjustViewBounds="true"
             android:layout_marginStart="15dp"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/imageViewDealer02"
+            android:layout_alignStart="@+id/dealer2_imageView"
             android:contentDescription="@string/ace_of_spades"
             android:visibility="invisible" />
 
@@ -85,11 +85,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ace"
-            android:id="@+id/imageViewDealer04"
+            android:id="@+id/dealer4_imageView"
             android:adjustViewBounds="true"
             android:layout_marginStart="15dp"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/imageViewDealer03"
+            android:layout_alignStart="@+id/delaer3_imageView"
             android:contentDescription="@string/ace_of_spades"
             android:visibility="invisible" />
 
@@ -97,11 +97,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ace"
-            android:id="@+id/imageViewDealer05"
+            android:id="@+id/dealer5_imageView"
             android:adjustViewBounds="true"
             android:layout_marginStart="15dp"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/imageViewDealer04"
+            android:layout_alignStart="@+id/dealer4_imageView"
             android:contentDescription="@string/ace_of_spades"
             android:visibility="invisible" />
 
@@ -109,11 +109,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ace"
-            android:id="@+id/imageViewDealer06"
+            android:id="@+id/dealer6_imageView"
             android:layout_marginStart="15dp"
             android:adjustViewBounds="true"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/imageViewDealer05"
+            android:layout_alignStart="@+id/dealer5_imageView"
             android:contentDescription="@string/ace_of_spades"
             android:visibility="invisible" />
 
@@ -121,10 +121,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ace"
-            android:id="@+id/imageViewDealer07"
+            android:id="@+id/dealer7_imageView"
             android:adjustViewBounds="true"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/imageViewDealer06"
+            android:layout_alignStart="@+id/dealer6_imageView"
             android:layout_marginStart="15dp"
             android:contentDescription="@string/ace_of_spades"
             android:visibility="invisible" />
@@ -133,22 +133,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ace"
-            android:id="@+id/imageViewDealer08"
+            android:id="@+id/dealer8_imageView"
             android:adjustViewBounds="true"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/imageViewDealer07"
-            android:contentDescription="@string/ace_of_spades"
-            android:layout_marginStart="15dp"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ace"
-            android:id="@+id/imageViewDealer09"
-            android:adjustViewBounds="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/imageViewDealer08"
+            android:layout_alignStart="@+id/dealer7_imageView"
             android:contentDescription="@string/ace_of_spades"
             android:layout_marginStart="15dp"
             android:visibility="invisible" />
@@ -157,10 +145,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ace"
-            android:id="@+id/imageViewDealer10"
+            android:id="@+id/dealer9_imageView"
             android:adjustViewBounds="true"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/imageViewDealer09"
+            android:layout_alignStart="@+id/dealer8_imageView"
             android:contentDescription="@string/ace_of_spades"
             android:layout_marginStart="15dp"
             android:visibility="invisible" />
@@ -169,11 +157,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ace"
-            android:id="@+id/imageViewDealer11"
+            android:id="@+id/dealer10_imageView"
+            android:adjustViewBounds="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/dealer9_imageView"
+            android:contentDescription="@string/ace_of_spades"
+            android:layout_marginStart="15dp"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ace"
+            android:id="@+id/dealer11_imageView"
             android:adjustViewBounds="true"
             android:layout_marginStart="15dp"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/imageViewDealer10"
+            android:layout_alignStart="@+id/dealer10_imageView"
             android:contentDescription="@string/ace_of_spades"
             android:visibility="invisible" />
 
@@ -217,7 +217,7 @@
             android:text="@string/bank_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView5"
+            android:id="@+id/bankAmount_textView"
             android:textSize="25sp"
             android:layout_below="@+id/bank_textView"
             android:layout_alignStart="@+id/bank_textView" />
@@ -228,8 +228,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/bet_textView"
             android:textSize="30sp"
-            android:layout_alignBaseline="@+id/textView5"
-            android:layout_alignBottom="@+id/textView5"
+            android:layout_alignBaseline="@+id/bankAmount_textView"
+            android:layout_alignBottom="@+id/bankAmount_textView"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="48dp" />
 
