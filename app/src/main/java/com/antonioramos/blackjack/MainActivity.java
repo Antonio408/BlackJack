@@ -28,6 +28,13 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
 
+    /*************************************************************************************************
+    ** double array holds 52 playing cards
+    ** The first part of the array chooses the suit and the second part chooses the value. Using a two
+    ** dimensional array increases the randomness of the game. The program uses Random class to first
+    ** generate  a number 0 thru 3 to choose the suit and then generates a number 0  thru 12 to choose
+    ** the value of the card being dealt. -by Antonio
+    *************************************************************************************************/
     private int[][] cardDrawables = {{R.drawable.heart_ace, R.drawable.heart_two, R.drawable.heart_three,
             R.drawable.heart_four, R.drawable.heart_five, R.drawable.heart_six, R.drawable.heart_seven,
             R.drawable.heart_eight, R.drawable.heart_nine, R.drawable.heart_ten,
@@ -88,8 +95,10 @@ public class MainActivity extends AppCompatActivity
     private static final String DEALER_TOTAL = "dealerTotal";
     public static final String DATA_FILENAME = "blackjack.txt";
 
-
-    //load player's imageView id into playersCards array
+    /***********************************************************************************************
+    ** Loads player's imageView ids into playersCards array. Array will be used to load player's
+    ** card dealt to correct position and imageView. -by Antonio
+    ***********************************************************************************************/
     private int[] playersCards = {R.id.player1_imageView, R.id.player2_imageView, R.id.player3_imageView,
             R.id.player4_imageView, R.id.player5_imageView, R.id.player6_imageView, R.id.player7_imageView,
             R.id.player8_imageView, R.id.player9_imageView, R.id.player10_imageView, R.id.player11_imageView};
@@ -100,9 +109,16 @@ public class MainActivity extends AppCompatActivity
             R.id.dealer6_imageView, R.id.dealer7_imageView, R.id.dealer8_imageView,
             R.id.dealer9_imageView, R.id.dealer10_imageView, R.id.dealer11_imageView};
 
-    //load coin buttons id
+    /***********************************************************************************************
+     ** Loads deal, hit, and stay button ids into an array. Program will use array in a for-each-loop
+     ** to respond to the correct button that was poked. -by Antonio
+     **********************************************************************************************/
     private int [] buttonId = {R.id.deal_button,R.id.hit_button, R.id.stay_button,};
 
+    /***********************************************************************************************
+     ** Loads coin button ids ($5, $10, $25, $50, $100) into an array. Program will use array to
+     ** increase player's bet value. -by Antonio
+     ***********************************************************************************************/
     private int [] coinButton ={ R.id.coin5_imageButton, R.id.coin25_imageButton,
             R.id.coin50_imageButton, R.id.coin100_imageButton};
 
@@ -118,7 +134,17 @@ public class MainActivity extends AppCompatActivity
     // variable to determine hold card is shown added by Gary
     private boolean dealerHoldCardShown = false;
 
-    //variable will keep track of number of card been dealt
+    /***********************************************************************************************
+     ** Condition flags-
+     * bestHand will be set when computer's hand is equal to or greater than 18
+     * noWinner will be set when the current game has a winner or the game is a tie. -by Antonio
+     **********************************************************************************************/
+    private boolean bestHand = true;
+    private boolean noWinner = true;
+
+    /***********************************************************************************************
+    ** Variable will keep a running total of player's bet. -by Antonio
+    ***********************************************************************************************/
     private int newBet = 0;
 
     // variables for bank and hand totals added by Gary
@@ -126,20 +152,24 @@ public class MainActivity extends AppCompatActivity
     private int playerTotal;
     private int dealerTotal;
 
+    /***********************************************************************************************
+     ** Variables will keep count of player's or dealer's number of cards dealt to index array.
+     * -by Antonio
+     **********************************************************************************************/
     private int playerCurrent = 0;
     private int dealerCurrent = 0;
 
+    /***********************************************************************************************
+     ** Variables will keep track of player's or dealer's number of cards dealt. -by Antonio
+     **********************************************************************************************/
     private int cardSuit;
+    private int cardValue;
 
-    //Declare and assign Random object to variable r
+    /***********************************************************************************************
+     ** Declare and assign Random object to variable r. Program will use random generator to
+     * choose player's or dealers's card. -by Antonio
+     **********************************************************************************************/
     Random r = new Random();
-
-    boolean bestHand = true;
-    boolean noWinner = true;
-
-    int cardValue;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,16 +178,18 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*******************************************************************************************
+         ** For-each-loops (buttonId, coinButton) will choose the correct id that corresponds to
+         * button that was poked -by Antonio
+         ******************************************************************************************/
         for(int id : buttonId){
             Button operation = (Button)findViewById(id);
             operation.setOnClickListener(this);
         }
         for(int id : coinButton){
-
             ImageButton coinOp =(ImageButton)findViewById(id);
             coinOp.setOnClickListener(this);
         }
-
 
         // test if instance was not restored initialize game and check for saved game added by Gary
         if (savedInstanceState == null) {
@@ -166,8 +198,6 @@ public class MainActivity extends AppCompatActivity
             readData();
             redrawTable();
         }
-
-
     }
 
     // prepare menu added by Gary
@@ -177,7 +207,6 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
         // options clicked method added by Gary
         @Override
@@ -194,14 +223,17 @@ public class MainActivity extends AppCompatActivity
                 newGame();
                 redrawTable();
             }
-
             return super.onOptionsItemSelected(item);
         }
-
+    /***********************************************************************************************
+     ** Method responds to user pressing game buttons -by Antonio
+     **********************************************************************************************/
     @Override
     public void onClick(View view) {
-
-
+        /*******************************************************************************************
+         ** When user pokes coin buttons placeBet method is called to calculate players bet
+         * -by Antonio
+         ******************************************************************************************/
         if (view.getId() == R.id.coin5_imageButton){
             placeBet(5);
         }
@@ -213,28 +245,48 @@ public class MainActivity extends AppCompatActivity
         }
         else if(view.getId() == R.id.coin100_imageButton){
             placeBet(100);
-
         }
+        /*******************************************************************************************
+         ** When user pokes (deal, hit, or stay) buttons and players bet is greater than zero game
+         *  will continue. -by Antonio
+         ******************************************************************************************/
         else if(newBet > 0) {
+            /***************************************************************************************
+             ** Will reset winMessage to start a new game -by Antonio
+             **************************************************************************************/
             ImageView im =(ImageView)findViewById(R.id.winMessage_imageView);
             im.setVisibility(View.INVISIBLE);
+
+            /***************************************************************************************
+             ** If all conditions are meet game continues otherwise buttons are disabled. -by Antonio
+             **************************************************************************************/
             if (view.getId() == R.id.deal_button && playerCurrent == 0) {
                 deal();
             } else if (view.getId() == R.id.hit_button&& playerCurrent > 0 ) {
                 hit();
             } else if(view.getId() == R.id.stay_button && playerCurrent > 0) {
-
                 computersTurn();
             }
         }
-
+        /*******************************************************************************************
+         ** If current hand is over game will reset and as player to place bet -by Antonio
+         ******************************************************************************************/
         else{
             restGame();
             TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
             tv.setText(R.string.place_bet);
         }
     }
+    /***********************************************************************************************
+     ** Method will calculate player's bet, update, and safe bank and bet totals.
+     *  conditions must be meet to place bet
+     * -players cards have not been dealt and bank value greater than 5
+     * -if after deducting requested bet from bank is less then zero and no cards have been dealt
+     *  request player to rest game
+     * -else calculate totals and continue game -by Antonio
+     **********************************************************************************************/
     public void placeBet(int bet){
+
         if(playerCurrent == 0 && bank >= 5) {
 
             if(bank - bet < 0 && newBet ==0){
@@ -248,6 +300,9 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+    /***********************************************************************************************
+     ** Method will display current bet and bank totals -by Antonio
+     **********************************************************************************************/
     public void upDateMoney(int bet1, int bank1){
         TextView tv=(TextView) findViewById(R.id.bet_textView);
         tv.setText(String.format(Locale.getDefault(), "%d", bet1));
@@ -298,44 +353,47 @@ public class MainActivity extends AppCompatActivity
             redrawTable();
         }
     }
-
-
-    //Method will call chooseSuit() and chooseCard() to generate player's dealt card
-    //and display card in the correct imageView. Method will also increment playerCurrent or
-    // dealereCurrent variable.
+    /***********************************************************************************************
+     ** Method will be called when user requested another card to be dealt(poke hit button).
+     * If condition is meet:
+     *  -players score not greater than 21 and noWinner flag not set continue game
+     * Call chooseSuit() and chooseCard() to generate player's dealt card
+     * Call setImageView to set and display card in the correct imageView. Calculate, safe and
+     * display players hand value. Increment variable playerCurrent by one. If players total is
+     * greater 21 end players turn and call computerTurn method. -by Antonio
+     **********************************************************************************************/
     public void hit() {
         TextView bet_tv = (TextView) findViewById(R.id.playerTotal_textView);
 
         if (checkScore(playerTotal)&& noWinner) {
             if (playerCurrent <= 7) {
 
-
                 cardValue = chooseCard();
                 cardSuit = chooseSuit();
 
-
                 setImageView(cardDrawables[cardSuit][cardValue], playersCards[playerCurrent]);
-
 
                 playerTotal = playerTotal + calculateScore(cardValue, playerTotal);
                 savePlayersHand(cardSuit, cardValue, playerCurrent);
 
                 bet_tv.setText(String.format(Locale.getDefault(), "Total score %d", playerTotal));
                 playerCurrent++;
+
                 if (playerTotal > 21) {
                     computersTurn();
                 }
-
             }
-
         }
-
     }
-
+    /***********************************************************************************************
+     ** Method starts game by dealing player two random cards face up and dealer two cards one
+     * face down and the second face up using these methods (chooseCard, chooseSuit and setImageView).
+     * Calculates, safes and displays players and dealer's hand value. Then increments playerCurrent
+     * and dealerCurrent by one each time a card is dealt to each. If player's first two cards
+     * are equal to 21 end player's turn and call computerTurn method. -by Antonio
+     **********************************************************************************************/
     public void deal() {
-
         TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
-
 
             //for loop will generate player's first two card
             for (int i = 0; i < 2; i++) {
@@ -349,14 +407,15 @@ public class MainActivity extends AppCompatActivity
                 tv.setText(String.format(Locale.getDefault(), "Total score %d", playerTotal));
                 savePlayersHand(cardSuit, cardValue, playerCurrent);
                 playerCurrent++;
-
-
             }
+
             cardValue = chooseCard();
             cardSuit = chooseSuit();
+
             tv = (TextView) findViewById(R.id.dealerTotal_textView);
             setImageView(R.drawable.back1, dealerCards[0]);
             dealerCurrent++;
+
             setImageView(cardDrawables[cardSuit][cardValue], dealerCards[dealerCurrent]);
             saveDealersHand(cardSuit, cardValue, dealerCurrent);
             dealerCurrent++;
@@ -367,38 +426,45 @@ public class MainActivity extends AppCompatActivity
             if (playerTotal == 21) {
                 computersTurn();
             }
-
-
     }
-
+    /***********************************************************************************************
+     ** Method will safe player's current card suit and value into playerCardType and playerCardSuit
+     * arrays. Will use currentHand variable to select array index. -by Antonio
+     **********************************************************************************************/
     public void savePlayersHand(int suit, int value, int currentHand) {
         playerCardType[currentHand] = value;
         playerCardSuit[currentHand] = suit;
     }
-
+    /***********************************************************************************************
+     ** Method will safe dealer's current card suit and value into dealerCardType and dealerCardSuit
+     * arrays. Will use currentHand variable to select array index. -by Antonio
+     **********************************************************************************************/
     public void saveDealersHand(int suit, int value, int currentHand) {
         dealerCardType[currentHand] = value;
         dealerCardSuit[currentHand] = suit;
 
     }
-
-
-    //method will set selected drawable to current imageView
+    /***********************************************************************************************
+     ** Method will display card dealt by loading drawable into the correct imageView and making
+     * imageView visible. -by Antonio
+     **********************************************************************************************/
     public void setImageView(int drawableId, int imageId) {
         ImageView imageView = (ImageView) findViewById(imageId);
         imageView.setVisibility(View.VISIBLE);
         imageView.setImageResource(drawableId);
     }
-
-    //method will generate and return a number between 0 and 3
-    //0 = hearts, 1 = diamonds, 2 = spades, 3 = clubs
+    /***********************************************************************************************
+     ** Method will generate and return a number between 0 and 3
+     * 0 = hearts, 1 = diamonds, 2 = spades, 3 = clubs -by Antonio
+     **********************************************************************************************/
     public int chooseSuit() {
         return r.nextInt(4);
     }
-
-    //method will generate and return a number between 0 and 12
-    //card value is
-    // 0=ace, 1=2, 2=3, 3=4, 4=5, 5=6, 7=8, 8=9, 9=10, 10=jack, 11=queen, 12=king
+    /***********************************************************************************************
+     ** Method will generate and return a number between 0 and 12
+     * card value is
+     * 0=ace, 1=2, 2=3, 3=4, 4=5, 5=6, 7=8, 8=9, 9=10, 10=jack, 11=queen, 12=king -by Antonio
+     **********************************************************************************************/
     public int chooseCard() {
         return r.nextInt(13);
     }
@@ -471,7 +537,12 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
+    /***********************************************************************************************
+     ** Method will calculate  and return card value
+     * if value 1 thru 8 increment value by one and return
+     * if value greater than 8 return 10
+     * if value equal to 0 call checkAce method -by Antonio
+     **********************************************************************************************/
     private int calculateScore(int value, int totalScore) {
         int checkScore;
         if (value >= 1 && value <= 8) {
@@ -480,25 +551,33 @@ public class MainActivity extends AppCompatActivity
             return 10;
         } else {
             return checkAce(totalScore);
-
         }
-
     }
-
+    /***********************************************************************************************
+     ** Method will calculated and return ace value
+     * if current score plus 11 is greater than 21 return 1
+     * else if score is not greater than 21 return 11. -by Antonio
+     **********************************************************************************************/
     private int checkAce(int currentScore) {
-
         if (currentScore + 11 > 21) {
             return 1;
         } else {
             return 11;
         }
     }
-
+    /***********************************************************************************************
+     ** Method sets checkScore flag to false if current score is greater than 21 -by Antonio
+     **********************************************************************************************/
     private boolean checkScore(int score) {
         return score < 21;
     }
-
-
+    /***********************************************************************************************
+     ** Method sets noWinner flag to false and bestHand flag to true when dealerCurrent is greater
+     * then 4. Deals dealer cards using chooseCard chooseSuit setImageView methods until dealer's
+     * hand is equal to or greater than 18 or dealer bust (score greater than 21 set bestHand flag to
+     * false).Increase dealerCurrent by one and save current hand value each time a card is dealt.
+     * call checkWinner to determined who is the winner. -by Antonio
+     **********************************************************************************************/
     private void computersTurn() {
         TextView tv = (TextView) findViewById(R.id.dealerTotal_textView);
         noWinner = false;
@@ -507,17 +586,13 @@ public class MainActivity extends AppCompatActivity
         if(dealerCurrent <4){
             bestHand = true;
         }
-
         while(checkScore(dealerTotal) && bestHand) {
-            ImageView displayCard = (ImageView) findViewById(dealerCards[dealerCurrent]);
+
             cardValue = chooseCard();
             cardSuit = chooseSuit();
             saveDealersHand(cardSuit, cardValue, dealerCurrent);
 
-
-
             setImageView(cardDrawables[cardSuit][cardValue], dealerCards[dealerCurrent]);
-
 
             dealerTotal = dealerTotal + calculateScore(cardValue, dealerTotal);
             tv.setText(String.format(Locale.getDefault(), "Total score %d", dealerTotal));
@@ -526,19 +601,23 @@ public class MainActivity extends AppCompatActivity
             }
             dealerCurrent++;
         }
-
         checkWinner();
-
     }
+    /***********************************************************************************************
+     ** Method will determine the winner.
+     * if player is the winner increase bank total
+     * if player is the loser decrease bank total
+     * if draw reset bank to previous total
+     * Display winnerMessage, update bank total and reset bet (newBet variable) to zero. -by Antonio
+     **********************************************************************************************/
     public void checkWinner(){
-
         int [] message ={R.drawable.winner,R.drawable.loser,R.drawable.draw};
+
         if((playerTotal > dealerTotal && playerTotal <21)||(playerTotal < dealerTotal
                 && dealerTotal > 21)){
 
             bank += newBet *2;
             winnerMessage(message[0]);
-
         }
         else if((playerTotal < dealerTotal && dealerTotal <22)||(dealerTotal < playerTotal
                 && playerTotal >21)){
@@ -552,7 +631,9 @@ public class MainActivity extends AppCompatActivity
         newBet =0;
         upDateMoney(newBet, bank);
     }
-
+    /***********************************************************************************************
+     ** Method will display message(Winner, Loser, Draw) when current hand is over. -by Antonio
+     **********************************************************************************************/
     public void winnerMessage(int winner){
         ImageView im = (ImageView)findViewById(R.id.message_imageView);
         im.setVisibility(View.VISIBLE);
@@ -561,7 +642,10 @@ public class MainActivity extends AppCompatActivity
         im.setVisibility(View.VISIBLE);
 
     }
-
+    /***********************************************************************************************
+     ** Method will reset game table images, messages and condition flags, to allow user to place a
+     * new bet and play another game. -by Antonio
+     **********************************************************************************************/
     private void restGame() {
         for (int i = 0; i < 11; i++) {
             ImageView iv = (ImageView) findViewById(playersCards[i]);
@@ -580,9 +664,7 @@ public class MainActivity extends AppCompatActivity
         playerTotal = 0;
         dealerTotal = 0;
         noWinner = true;
-
     }
-
     // call method to save game state to file added by Gary
     @Override
     protected void onStop() {
