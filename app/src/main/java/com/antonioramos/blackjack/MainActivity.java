@@ -635,9 +635,7 @@ public class MainActivity extends AppCompatActivity
      ** Method will display message(Winner, Loser, Draw) when current hand is over. -by Antonio
      **********************************************************************************************/
     public void winnerMessage(int winner){
-        ImageView im = (ImageView)findViewById(R.id.message_imageView);
-        im.setVisibility(View.VISIBLE);
-        im =(ImageView)findViewById(R.id.winMessage_imageView);
+        ImageView im = (ImageView)findViewById(R.id.winMessage_imageView);
         im.setImageResource(winner);
         im.setVisibility(View.VISIBLE);
 
