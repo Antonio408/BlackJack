@@ -358,7 +358,7 @@ public class MainActivity extends AppCompatActivity
      * If condition is meet:
      *  -players score not greater than 21 and noWinner flag not set continue game
      * Call chooseSuit() and chooseCard() to generate player's dealt card
-     * Call setImageView to set and display card in the correct imageView. Calculate, safe and
+     * Call setImageView to set and display card in the correct imageView. Calculate, save and
      * display players hand value. Increment variable playerCurrent by one. If players total is
      * greater 21 end players turn and call computerTurn method. -by Antonio
      **********************************************************************************************/
@@ -388,7 +388,7 @@ public class MainActivity extends AppCompatActivity
     /***********************************************************************************************
      ** Method starts game by dealing player two random cards face up and dealer two cards one
      * face down and the second face up using these methods (chooseCard, chooseSuit and setImageView).
-     * Calculates, safes and displays players and dealer's hand value. Then increments playerCurrent
+     * Calculates, saves and displays players and dealer's hand value. Then increments playerCurrent
      * and dealerCurrent by one each time a card is dealt to each. If player's first two cards
      * are equal to 21 end player's turn and call computerTurn method. -by Antonio
      **********************************************************************************************/
@@ -428,7 +428,7 @@ public class MainActivity extends AppCompatActivity
             }
     }
     /***********************************************************************************************
-     ** Method will safe player's current card suit and value into playerCardType and playerCardSuit
+     ** Method will save player's current card suit and value into playerCardType and playerCardSuit
      * arrays. Will use currentHand variable to select array index. -by Antonio
      **********************************************************************************************/
     public void savePlayersHand(int suit, int value, int currentHand) {
@@ -436,7 +436,7 @@ public class MainActivity extends AppCompatActivity
         playerCardSuit[currentHand] = suit;
     }
     /***********************************************************************************************
-     ** Method will safe dealer's current card suit and value into dealerCardType and dealerCardSuit
+     ** Method will save dealer's current card suit and value into dealerCardType and dealerCardSuit
      * arrays. Will use currentHand variable to select array index. -by Antonio
      **********************************************************************************************/
     public void saveDealersHand(int suit, int value, int currentHand) {
