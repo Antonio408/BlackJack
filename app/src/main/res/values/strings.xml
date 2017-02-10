@@ -59,7 +59,7 @@
     <string name="bank_text">Bank</string>
     <string name="bank_amount">1000</string>
     <string name="bet_text">Bet</string>
-    <string name="deal_text">Deal</string>
+    <string name="deal_text">Deal/ New</string>
     <string name="hit_text">Hit</string>
     <string name="stay_text">Stay</string>
     <string name="coins5">Bet 5 Coins</string>
