@@ -15,7 +15,7 @@
     android:background="#087A61">
 
     <TextView
-        android:text="Developed by"
+        android:text="@string/developed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -26,7 +26,7 @@
         android:textColor="#ffffff" />
 
     <TextView
-        android:text="And"
+        android:text="@string/and"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textView5"
@@ -36,7 +36,7 @@
         android:textColor="#ffffff" />
 
     <TextView
-        android:text="Larson"
+        android:text="@string/larson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView9"
@@ -47,7 +47,7 @@
         android:textColor="#ffffff" />
 
     <TextView
-        android:text="Antonio"
+        android:text="@string/antonio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="74dp"
@@ -59,7 +59,7 @@
         android:textColor="#ffffff" />
 
     <TextView
-        android:text="Ramos"
+        android:text="@string/ramos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView8"
@@ -69,7 +69,7 @@
         android:textColor="#ffffff" />
 
     <TextView
-        android:text="Gary"
+        android:text="@string/gary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView7"

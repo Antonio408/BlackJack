@@ -64,6 +64,7 @@
             android:id="@+id/firstCard_imageView"
             android:adjustViewBounds="true"
             android:layout_alignParentTop="true"
+            android:contentDescription="@string/ace_of_hearts"
             android:layout_toStartOf="@+id/dealer7_imageView"
             android:visibility="invisible"/>
 
@@ -83,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ace"
-            android:id="@+id/delaer3_imageView"
+            android:id="@+id/dealer3_imageView"
             android:adjustViewBounds="true"
             android:layout_marginStart="15dp"
             android:layout_alignParentTop="true"
@@ -99,7 +100,7 @@
             android:adjustViewBounds="true"
             android:layout_marginStart="15dp"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/delaer3_imageView"
+            android:layout_alignStart="@+id/dealer3_imageView"
             android:contentDescription="@string/ace_of_spades"
             android:visibility="invisible" />
 
@@ -244,7 +245,7 @@
             android:layout_marginEnd="48dp" />
 
         <TextView
-            android:text="Bet"
+            android:text="@string/bet_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25sp"
@@ -258,6 +259,7 @@
             android:id="@+id/message_imageView"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:contentDescription="@string/blank_message"
             android:visibility="invisible"/>
 
         <ImageView
@@ -268,6 +270,7 @@
             android:visibility="invisible"
             android:layout_above="@+id/playerTotal_textView"
             android:layout_centerHorizontal="true"
+            android:contentDescription="@string/winner"
             android:layout_alignTop="@+id/bank_textView" />
 
     </RelativeLayout>

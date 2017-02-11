@@ -71,4 +71,14 @@
     <string name="title_activity_about">AboutActivity</string>
     <string name="place_bet">PLACE BET!!!</string>
     <string name="select_new_game">Select new game from Menu</string>
+    <string name="blank_message">Empty message.</string>
+    <string name="winner">Winner</string>
+    <string name="developed">Developed by</string>
+    <string name="and">And</string>
+    <string name="larson">Larson</string>
+    <string name="antonio">Antonio</string>
+    <string name="ramos">Ramos</string>
+    <string name="gary">Gary</string>
+    <string name="play">Play</string>
+    <string name="about">About</string>
 </resources>
