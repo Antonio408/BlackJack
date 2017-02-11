@@ -344,6 +344,15 @@
             android:layout_marginEnd="21dp"
             android:visibility="invisible" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/winner"
+            android:id="@+id/winMessage_imageView"
+            android:visibility="invisible"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -449,20 +458,6 @@
                 android:layout_alignParentStart="true"
                 android:textSize="25sp"
                 android:layout_marginStart="37dp" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/message_imageView"
-                android:background="#087A61"
-                android:visibility="invisible"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/winner"
-                android:id="@+id/winMessage_imageView"
-                android:visibility="invisible"/>
 
         </RelativeLayout>
 
