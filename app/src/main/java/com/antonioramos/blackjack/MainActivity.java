@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity
     ** generate  a number 0 thru 3 to choose the suit and then generates a number 0  thru 12 to choose
     ** the value of the card being dealt. -by Antonio
     *************************************************************************************************/
-    private int[][] cardDrawables = {{R.drawable.heart_ace, R.drawable.heart_two, R.drawable.heart_three,
+    private final int[][] cardDrawables = {{R.drawable.heart_ace, R.drawable.heart_two, R.drawable.heart_three,
             R.drawable.heart_four, R.drawable.heart_five, R.drawable.heart_six, R.drawable.heart_seven,
             R.drawable.heart_eight, R.drawable.heart_nine, R.drawable.heart_ten,
             R.drawable.heart_jack, R.drawable.heart_queen, R.drawable.heart_king},
@@ -56,8 +55,8 @@ public class MainActivity extends AppCompatActivity
                     R.drawable.clubs_eight, R.drawable.clubs_nine, R.drawable.clubs_ten,
                     R.drawable.clubs_jack, R.drawable.clubs_queen, R.drawable.clubs_king}};
 
-    // Variable to hold content description ids for accessibilty added by Gary
-    private int[][] cardStrings = {{R.string.ace_of_hearts, R.string.two_of_hearts,
+    // Variable to hold content description ids for Accessibility  added by Gary
+    private final int[][] cardStrings = {{R.string.ace_of_hearts, R.string.two_of_hearts,
             R.string.three_of_hearts, R.string.four_of_hearts, R.string.five_of_hearts,
             R.string.six_of_hearts, R.string.seven_of_hearts, R.string.eight_of_hearts,
             R.string.nine_of_hearts, R.string.ten_of_hearts, R.string.jack_of_hearts,
@@ -88,24 +87,24 @@ public class MainActivity extends AppCompatActivity
     private static final String DEALER_CARD_TYPE = "dealerCardType";
     private static final String DEALER_HOLD_CARD_SHOWN = "dealerHoldCardShown";
     private static final String BET = "newBet";
-    private static final String BANK = "bamk";
+    private static final String BANK = "bank";
     private static final String PLAYER_CURRENT = "playerCurrent";
     private static final String DEALER_CURRENT = "dealerCurrent";
     private static final String PLAYER_TOTAL = "playerTotal";
     private static final String DEALER_TOTAL = "dealerTotal";
-    public static final String DATA_FILENAME = "blackjack.txt";
+    private static final String DATA_FILENAME = "blackjack.txt";
 
     /***********************************************************************************************
     ** Loads player's imageView ids into playersCards array. Array will be used to load player's
     ** card dealt to correct position and imageView. -by Antonio
     ***********************************************************************************************/
-    private int[] playersCards = {R.id.player1_imageView, R.id.player2_imageView, R.id.player3_imageView,
+    private final int[] playersCards = {R.id.player1_imageView, R.id.player2_imageView, R.id.player3_imageView,
             R.id.player4_imageView, R.id.player5_imageView, R.id.player6_imageView, R.id.player7_imageView,
             R.id.player8_imageView, R.id.player9_imageView, R.id.player10_imageView, R.id.player11_imageView};
 
     //load dealer's imageView id into dealerCards array added by Gary
-    private int[] dealerCards = {R.id.dealer1_imageView, R.id.dealer2_imageView, R.id.firstCard_imageView,
-            R.id.delaer3_imageView, R.id.dealer4_imageView, R.id.dealer5_imageView,
+    private final int[] dealerCards = {R.id.dealer1_imageView, R.id.dealer2_imageView, R.id.firstCard_imageView,
+            R.id.dealer3_imageView, R.id.dealer4_imageView, R.id.dealer5_imageView,
             R.id.dealer6_imageView, R.id.dealer7_imageView, R.id.dealer8_imageView,
             R.id.dealer9_imageView, R.id.dealer10_imageView, R.id.dealer11_imageView};
 
@@ -113,13 +112,13 @@ public class MainActivity extends AppCompatActivity
      ** Loads deal, hit, and stay button ids into an array. Program will use array in a for-each-loop
      ** to respond to the correct button that was poked. -by Antonio
      **********************************************************************************************/
-    private int [] buttonId = {R.id.deal_button,R.id.hit_button, R.id.stay_button,};
+    private final int [] buttonId = {R.id.deal_button,R.id.hit_button, R.id.stay_button,};
 
     /***********************************************************************************************
      ** Loads coin button ids ($5, $10, $25, $50, $100) into an array. Program will use array to
      ** increase player's bet value. -by Antonio
      ***********************************************************************************************/
-    private int [] coinButton ={ R.id.coin5_imageButton, R.id.coin25_imageButton,
+    private final int [] coinButton ={ R.id.coin5_imageButton, R.id.coin25_imageButton,
             R.id.coin50_imageButton, R.id.coin100_imageButton};
 
     // variables to keep track of cards dealt added by Gary
@@ -169,7 +168,11 @@ public class MainActivity extends AppCompatActivity
      ** Declare and assign Random object to variable r. Program will use random generator to
      * choose player's or dealers's card. -by Antonio
      **********************************************************************************************/
-    Random r = new Random();
+    private Random r;
+
+    public MainActivity() {
+        r = new Random();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -285,7 +288,7 @@ public class MainActivity extends AppCompatActivity
      *  request player to rest game
      * -else calculate totals and continue game -by Antonio
      **********************************************************************************************/
-    public void placeBet(int bet){
+    private void placeBet(int bet){
 
         if(playerCurrent == 0 && bank >= 5) {
 
@@ -303,7 +306,7 @@ public class MainActivity extends AppCompatActivity
     /***********************************************************************************************
      ** Method will display current bet and bank totals -by Antonio
      **********************************************************************************************/
-    public void upDateMoney(int bet1, int bank1){
+    private void upDateMoney(int bet1, int bank1){
         TextView tv=(TextView) findViewById(R.id.bet_textView);
         tv.setText(String.format(Locale.getDefault(), "%d", bet1));
         tv =(TextView)findViewById(R.id.bankAmount_textView);
@@ -362,7 +365,7 @@ public class MainActivity extends AppCompatActivity
      * display players hand value. Increment variable playerCurrent by one. If players total is
      * greater 21 end players turn and call computerTurn method. -by Antonio
      **********************************************************************************************/
-    public void hit() {
+    private void hit() {
         TextView bet_tv = (TextView) findViewById(R.id.playerTotal_textView);
 
         if (checkScore(playerTotal)&& noWinner) {
@@ -392,7 +395,7 @@ public class MainActivity extends AppCompatActivity
      * and dealerCurrent by one each time a card is dealt to each. If player's first two cards
      * are equal to 21 end player's turn and call computerTurn method. -by Antonio
      **********************************************************************************************/
-    public void deal() {
+    private void deal() {
         TextView tv = (TextView) findViewById(R.id.playerTotal_textView);
 
             //for loop will generate player's first two card
@@ -431,7 +434,7 @@ public class MainActivity extends AppCompatActivity
      ** Method will save player's current card suit and value into playerCardType and playerCardSuit
      * arrays. Will use currentHand variable to select array index. -by Antonio
      **********************************************************************************************/
-    public void savePlayersHand(int suit, int value, int currentHand) {
+    private void savePlayersHand(int suit, int value, int currentHand) {
         playerCardType[currentHand] = value;
         playerCardSuit[currentHand] = suit;
     }
@@ -439,7 +442,7 @@ public class MainActivity extends AppCompatActivity
      ** Method will save dealer's current card suit and value into dealerCardType and dealerCardSuit
      * arrays. Will use currentHand variable to select array index. -by Antonio
      **********************************************************************************************/
-    public void saveDealersHand(int suit, int value, int currentHand) {
+    private void saveDealersHand(int suit, int value, int currentHand) {
         dealerCardType[currentHand] = value;
         dealerCardSuit[currentHand] = suit;
 
@@ -448,7 +451,7 @@ public class MainActivity extends AppCompatActivity
      ** Method will display card dealt by loading drawable into the correct imageView and making
      * imageView visible. -by Antonio
      **********************************************************************************************/
-    public void setImageView(int drawableId, int imageId) {
+    private void setImageView(int drawableId, int imageId) {
         ImageView imageView = (ImageView) findViewById(imageId);
         imageView.setVisibility(View.VISIBLE);
         imageView.setImageResource(drawableId);
@@ -457,7 +460,7 @@ public class MainActivity extends AppCompatActivity
      ** Method will generate and return a number between 0 and 3
      * 0 = hearts, 1 = diamonds, 2 = spades, 3 = clubs -by Antonio
      **********************************************************************************************/
-    public int chooseSuit() {
+    private int chooseSuit() {
         return r.nextInt(4);
     }
     /***********************************************************************************************
@@ -465,7 +468,7 @@ public class MainActivity extends AppCompatActivity
      * card value is
      * 0=ace, 1=2, 2=3, 3=4, 4=5, 5=6, 7=8, 8=9, 9=10, 10=jack, 11=queen, 12=king -by Antonio
      **********************************************************************************************/
-    public int chooseCard() {
+    private int chooseCard() {
         return r.nextInt(13);
     }
 
@@ -544,7 +547,7 @@ public class MainActivity extends AppCompatActivity
      * if value equal to 0 call checkAce method -by Antonio
      **********************************************************************************************/
     private int calculateScore(int value, int totalScore) {
-        int checkScore;
+        // int checkScore;
         if (value >= 1 && value <= 8) {
             return ++value;
         } else if (value > 8) {
@@ -610,7 +613,7 @@ public class MainActivity extends AppCompatActivity
      * if draw reset bank to previous total
      * Display winnerMessage, update bank total and reset bet (newBet variable) to zero. -by Antonio
      **********************************************************************************************/
-    public void checkWinner(){
+    private void checkWinner(){
         int [] message ={R.drawable.winner,R.drawable.loser,R.drawable.draw};
 
         if((playerTotal > dealerTotal && playerTotal <21)||(playerTotal < dealerTotal
@@ -634,7 +637,7 @@ public class MainActivity extends AppCompatActivity
     /***********************************************************************************************
      ** Method will display message(Winner, Loser, Draw) when current hand is over. -by Antonio
      **********************************************************************************************/
-    public void winnerMessage(int winner){
+    private void winnerMessage(int winner){
         ImageView im = (ImageView)findViewById(R.id.winMessage_imageView);
         im.setImageResource(winner);
         im.setVisibility(View.VISIBLE);
